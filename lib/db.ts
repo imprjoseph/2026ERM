@@ -445,7 +445,7 @@ const historicalPhotoUrls: Record<number, string[]> = {
 };
 
 async function syncConfirmed2026DetailsOnce() {
-  const version = "2026-confirmed-details-v3";
+  const version = "2026-confirmed-details-v4";
   const applied = await db()
     .prepare(
       "SELECT value FROM app_meta WHERE key = 'current_event_content_version'",
@@ -627,7 +627,7 @@ async function syncConfirmed2026DetailsOnce() {
   const statements = [
     db()
       .prepare(
-        "UPDATE events SET name_en = ?, date_label = ?, time_label = ?, checkin_label = ?, location_name = ?, location_address = ?, organizer = ?, hero_url = ?, fee_label = ?, deadline_label = ?, transport_json = ?, updated_at = ? WHERE year = 2026",
+        "UPDATE events SET name_en = ?, date_label = ?, time_label = ?, checkin_label = ?, location_name = ?, location_address = ?, venue_detail = ?, organizer = ?, hero_url = ?, fee_label = ?, deadline_label = ?, transport_json = ?, updated_at = ? WHERE year = 2026",
       )
       .bind(
         "2026 Conference on ERM in the insurance industry",
@@ -636,6 +636,7 @@ async function syncConfirmed2026DetailsOnce() {
         "08:30–09:00",
         "晶華酒店",
         "台北市中山區中山北路二段 39 巷 3 號",
+        "3 樓宴會廳",
         "財團法人保險安定基金",
         "/hero-2026.jpg",
         "免費",
@@ -668,7 +669,7 @@ async function syncConfirmed2026DetailsOnce() {
           item[5],
           item[6],
           item[7],
-          "晶華酒店｜廳別待確認",
+          "晶華酒店｜3 樓宴會廳",
           item[8],
         ),
     ),

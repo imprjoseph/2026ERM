@@ -393,12 +393,6 @@ export default function HomePage() {
                 <dd>{event.audience}</dd>
               </div>
               <div>
-                <dt>費用／名額</dt>
-                <dd>
-                  {event.feeLabel}／{event.capacityLabel}
-                </dd>
-              </div>
-              <div>
                 <dt>報名截止</dt>
                 <dd>{event.deadlineLabel}</dd>
               </div>

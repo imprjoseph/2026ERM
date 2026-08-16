@@ -180,7 +180,9 @@ export default function RegisterPage() {
             </div>
             <div>
               <dt>地點</dt>
-              <dd>{event.locationName}</dd>
+              <dd>
+                {event.locationName} {event.venueDetail}
+              </dd>
             </div>
             <div>
               <dt>截止</dt>

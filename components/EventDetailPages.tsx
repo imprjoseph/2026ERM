@@ -175,7 +175,7 @@ export function AgendaPage() {
       <section className="section inner-section">
         <div className="agenda-toolbar">
           <span>
-            {event.dateLabel} · {event.locationName}
+            {event.dateLabel} · {event.locationName} {event.venueDetail}
           </span>
           <div>
             <button disabled>下載議程 PDF</button>

@@ -55,6 +55,13 @@ test("議程開始與結束時間使用一致的 HH:mm 區間格式", async () =
   assert.doesNotMatch(home, /<small>\{item\.endTime\}<\/small>/);
   assert.doesNotMatch(detail, /<small>\{item\.endTime\}<\/small>/);
 });
+test("會議資訊移除費用名額列並確認三樓宴會廳", async () => {
+  const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
+  const database = await readFile(new URL("lib/db.ts", root), "utf8");
+  assert.doesNotMatch(home, /<dt>費用／名額<\/dt>/);
+  assert.match(database, /3 樓宴會廳/);
+  assert.match(database, /2026-confirmed-details-v4/);
+});
 test("敏感設定只出現在環境變數範本", async () => {
   const source = await readFile(new URL("lib/auth.ts", root), "utf8");
   assert.match(source, /ADMIN_EMAIL_ALLOWLIST/);
