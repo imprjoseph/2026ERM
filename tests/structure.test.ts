@@ -44,6 +44,17 @@ test("歷年頁提供照片，頁尾使用完整單位名稱與聯絡資訊", as
   assert.match(shell, /penny@impr\.com\.tw/);
   assert.doesNotMatch(shell, /執行單位/);
 });
+test("議程開始與結束時間使用一致的 HH:mm 區間格式", async () => {
+  const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
+  const detail = await readFile(
+    new URL("components/EventDetailPages.tsx", root),
+    "utf8",
+  );
+  assert.match(home, /\{item\.startTime\}–\{item\.endTime\}/);
+  assert.match(detail, /\{item\.startTime\}–\{item\.endTime\}/);
+  assert.doesNotMatch(home, /<small>\{item\.endTime\}<\/small>/);
+  assert.doesNotMatch(detail, /<small>\{item\.endTime\}<\/small>/);
+});
 test("敏感設定只出現在環境變數範本", async () => {
   const source = await readFile(new URL("lib/auth.ts", root), "utf8");
   assert.match(source, /ADMIN_EMAIL_ALLOWLIST/);

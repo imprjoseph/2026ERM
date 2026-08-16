@@ -190,8 +190,7 @@ export function AgendaPage() {
             .map((item) => (
               <article key={item.id}>
                 <time>
-                  {item.startTime}
-                  <small>{item.endTime}</small>
+                  {item.startTime}–{item.endTime}
                 </time>
                 <div>
                   <span>{item.category}</span>

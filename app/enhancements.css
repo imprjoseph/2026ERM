@@ -9,6 +9,9 @@ body .hero {
   min-width: 0;
   flex-direction: column;
 }
+.agenda-list time {
+  white-space: nowrap;
+}
 .speaker-card .speaker-type {
   margin-bottom: 10px;
 }
@@ -146,6 +149,9 @@ body .hero {
 }
 
 @media (max-width: 760px) {
+  .agenda-list article {
+    grid-template-columns: 122px 1fr;
+  }
   .speaker-detail-section {
     grid-template-columns: 1fr;
     gap: 36px;
