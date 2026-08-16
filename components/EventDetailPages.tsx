@@ -351,7 +351,7 @@ export function DialogueDetail({
         <div>
           <span className="eyebrow light">YEAR IN REVIEW</span>
           <h1>{dialogue.year}</h1>
-          <p>{dialogue.name}</p>
+          <p>歷年對話</p>
         </div>
       </section>
       <section className="section inner-section">

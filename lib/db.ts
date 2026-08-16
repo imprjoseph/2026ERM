@@ -445,7 +445,7 @@ const historicalPhotoUrls: Record<number, string[]> = {
 };
 
 async function syncConfirmed2026DetailsOnce() {
-  const version = "2026-confirmed-details-v5";
+  const version = "2026-confirmed-details-v6";
   const applied = await db()
     .prepare(
       "SELECT value FROM app_meta WHERE key = 'current_event_content_version'",
@@ -536,7 +536,7 @@ async function syncConfirmed2026DetailsOnce() {
       "午餐",
       "午餐交流",
       "餐飲與場地安排以會前通知為準。",
-      "全體與會者｜B1 栢麗廳",
+      "午餐地點｜B1 栢麗廳",
       7,
     ],
     [

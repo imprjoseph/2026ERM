@@ -94,6 +94,8 @@ test("歷年頁不顯示年度成果，首頁使用緊湊版面範圍", async ()
   assert.doesNotMatch(detail, /dialogue\.highlights\.map/);
   assert.doesNotMatch(detail, /資料依該年度結案報告/);
   assert.doesNotMatch(detail, /與會者個人資料/);
+  assert.match(detail, /<p>歷年對話<\/p>/);
+  assert.doesNotMatch(detail, /<p>\{dialogue\.name\}<\/p>/);
   assert.match(enhancements, /\.home-page \.timeline \.year/);
   assert.match(enhancements, /\.home-page \.quick-registration-section/);
 });
@@ -102,8 +104,8 @@ test("會議資訊移除費用名額列並確認三樓宴會廳", async () => {
   const database = await readFile(new URL("lib/db.ts", root), "utf8");
   assert.doesNotMatch(home, /<dt>費用／名額<\/dt>/);
   assert.match(database, /3 樓宴會廳/);
-  assert.match(database, /全體與會者｜B1 栢麗廳/);
-  assert.match(database, /2026-confirmed-details-v5/);
+  assert.match(database, /午餐地點｜B1 栢麗廳/);
+  assert.match(database, /2026-confirmed-details-v6/);
 });
 test("敏感設定只出現在環境變數範本", async () => {
   const source = await readFile(new URL("lib/auth.ts", root), "utf8");
