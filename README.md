@@ -51,10 +51,23 @@ npm run db:generate
 - `SMTP_RELAY_URL`、`SMTP_RELAY_TOKEN`：選用 HTTPS SMTP relay。
 - `SMTP_FROM_NAME`、`SMTP_FROM_EMAIL`：活動寄件者資訊。
 - `PUBLIC_SITE_URL`：正式網站網址，供 QR Code、行事曆及 SEO 使用。
+- `GOOGLE_SHEETS_WEBHOOK_URL`、`GOOGLE_SHEETS_WEBHOOK_TOKEN`：Google Sheet 後台的 Apps Script Web App 網址與私密權杖。未設定時網站自動沿用 D1，不影響報名收件。
 
 不得提交 `.env.local`、密碼、Token 或 SMTP 帳密。管理者權限由伺服器端檢查，不信任前端顯示狀態。
 
 ## 管理後台操作
+
+### Google Sheet 後台
+
+已建立原生 Google Sheet 管理檔，包含「活動設定、報名名單、2026議程、2026講者、FAQ、歷年論壇」等分頁。網站可透過綁定於該試算表的 Apps Script 即時讀取公開內容，並在報名成功後將資料新增到「報名名單」。
+
+1. 在 Google Sheet 選擇「擴充功能 → Apps Script」。
+2. 將 `integrations/google-apps-script/Code.gs` 貼入並儲存。
+3. 在「專案設定 → 指令碼屬性」新增 `WEBHOOK_TOKEN`，使用高強度隨機值。
+4. 選擇「部署 → 新增部署作業 → 網頁應用程式」，執行身分設為本人，存取權設為任何人。
+5. 將部署網址及同一組 Token 填入網站環境變數 `GOOGLE_SHEETS_WEBHOOK_URL`、`GOOGLE_SHEETS_WEBHOOK_TOKEN`，再重新部署。
+
+同步失敗不會讓報名資料消失：D1 是交易資料的安全備援，Google Sheet 是日常內容與名單操作介面。請勿在試算表中公開分享報名者個資。
 
 1. 前往 `/admin` 並完成 Sign in with ChatGPT。
 2. 正式環境會再以 `ADMIN_EMAIL_ALLOWLIST` 驗證授權。

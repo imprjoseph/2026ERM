@@ -11,6 +11,7 @@ import {
   RegistrationCountdown,
   useEventData,
 } from "./SiteShell";
+import QuickRegistrationForm from "./QuickRegistrationForm";
 
 const values = [
   [
@@ -454,10 +455,31 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="quick-registration-section" id="registration-form">
+          <div className="section">
+            <div className="quick-registration-heading">
+              <div>
+                <div className="section-label">
+                  <span>08</span> REGISTRATION
+                </div>
+                <h2>
+                  立即提出
+                  <br />
+                  報名申請。
+                </h2>
+              </div>
+              <p>
+                填寫必要資料即可送出；如有英文名牌、飲食或無障礙需求，可改用完整報名表。
+              </p>
+            </div>
+            <QuickRegistrationForm />
+          </div>
+        </section>
+
         <section className="faq-section" id="faq">
           <div className="section">
             <div className="section-label">
-              <span>08</span> FAQ
+              <span>09</span> FAQ
             </div>
             <div className="faq-grid">
               <h2>常見問題</h2>
