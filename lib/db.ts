@@ -759,10 +759,21 @@ function bool(value: number) {
 }
 
 export async function getCurrentEvent(): Promise<EventData> {
-  await ensureDatabase();
-  const event = await db()
-    .prepare("SELECT * FROM events WHERE is_current = 1 LIMIT 1")
-    .first<Record<string, unknown>>();
+  const readCurrentEvent = () =>
+    db()
+      .prepare("SELECT * FROM events WHERE is_current = 1 LIMIT 1")
+      .first<Record<string, unknown>>();
+  let event: Record<string, unknown> | null = null;
+  try {
+    event = await readCurrentEvent();
+  } catch {
+    await ensureDatabase();
+    event = await readCurrentEvent();
+  }
+  if (!event) {
+    await ensureDatabase();
+    event = await readCurrentEvent();
+  }
   if (!event) throw new Error("Current event not found");
   const eventId = String(event.id);
   const [focuses, speakers, agenda, faqs, dialogues] = await Promise.all([
