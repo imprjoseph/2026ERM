@@ -99,6 +99,76 @@ body .hero {
   }
 }
 
+/* Keep the homepage compact while preserving comfortable inner-page spacing */
+.home-page > .section:not(.focus-section):not(.register-cta),
+.home-page
+  > section:not(.hero):not(.dialogue-band):not(.register-cta)
+  > .section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+.home-page .section-heading {
+  margin-bottom: 36px;
+}
+.home-page .about-grid,
+.home-page .attend-grid {
+  margin-top: 36px;
+}
+.home-page .faq-grid {
+  margin-top: 34px;
+}
+.home-page .timeline .year {
+  min-height: 175px;
+  padding: 26px;
+}
+.home-page .map-embed,
+.home-page .map-embed iframe {
+  min-height: 340px;
+  height: 340px;
+}
+.home-page .transport-grid {
+  margin-top: 40px;
+}
+.home-page .quick-registration-section {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+.home-page .quick-registration-section > .section {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.home-page .register-cta {
+  padding-top: 78px;
+  padding-bottom: 78px;
+}
+
+@media (max-width: 760px) {
+  .home-page > .section:not(.focus-section):not(.register-cta),
+  .home-page
+    > section:not(.hero):not(.dialogue-band):not(.register-cta)
+    > .section {
+    padding-top: 54px;
+    padding-bottom: 54px;
+  }
+  .home-page .section-heading {
+    margin-bottom: 26px;
+  }
+  .home-page .about-grid,
+  .home-page .attend-grid,
+  .home-page .faq-grid {
+    margin-top: 28px;
+  }
+  .home-page .timeline .year {
+    min-height: 130px;
+    padding: 22px;
+  }
+  .home-page .quick-registration-section,
+  .home-page .register-cta {
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
+}
+
 /* Compact priority sections and reliable navigation feedback */
 .dialogue-band .section {
   padding-top: 48px;

@@ -69,6 +69,22 @@ test("首頁與完整議程皆使用時間項目講者三欄表格", async () =>
     assert.match(source, /agenda-speaker-cell/);
   }
 });
+test("歷年頁不顯示年度成果，首頁使用緊湊版面範圍", async () => {
+  const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
+  const detail = await readFile(
+    new URL("components/EventDetailPages.tsx", root),
+    "utf8",
+  );
+  const enhancements = await readFile(
+    new URL("app/enhancements.css", root),
+    "utf8",
+  );
+  assert.match(home, /<main className="home-page">/);
+  assert.doesNotMatch(detail, /年度成果/);
+  assert.doesNotMatch(detail, /dialogue\.highlights\.map/);
+  assert.match(enhancements, /\.home-page \.timeline \.year/);
+  assert.match(enhancements, /\.home-page \.quick-registration-section/);
+});
 test("會議資訊移除費用名額列並確認三樓宴會廳", async () => {
   const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
   const database = await readFile(new URL("lib/db.ts", root), "utf8");

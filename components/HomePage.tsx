@@ -93,7 +93,7 @@ export default function HomePage({
         dangerouslySetInnerHTML={{ __html: eventSchema }}
       />
       <Header />
-      <main>
+      <main className="home-page">
         <section className="hero" id="forum">
           <div className="hero-orbit orbit-one" />
           <div className="hero-orbit orbit-two" />

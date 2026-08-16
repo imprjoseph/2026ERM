@@ -418,20 +418,6 @@ export function DialogueDetail({
             </div>
           </section>
         )}
-        {dialogue.highlights.length > 0 && (
-          <section className="history-block">
-            <span className="eyebrow">HIGHLIGHTS</span>
-            <h2>年度成果</h2>
-            <ul className="history-list">
-              {dialogue.highlights.map((item, index) => (
-                <li key={item}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
         {dialogue.agenda.length > 0 && (
           <section className="history-block">
             <span className="eyebrow">PROGRAMME</span>
