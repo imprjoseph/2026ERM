@@ -155,23 +155,23 @@ async function seedIfEmpty() {
         2026,
         "2026",
         "2026年保險業風險管理趨勢論壇",
-        "2026 Insurance Risk Management Trends Forum",
+        "2026 Conference on ERM in the insurance industry",
         "新紀元：價值導向之風險管理與資本策略",
         "A New Era: Value-Oriented Risk Management and Capital Strategy",
         "持續對話，與產業共同前行",
         "An Ongoing Dialogue on Risk and Value",
         "2026 年 11 月 16 日",
-        "活動時間待確認",
-        "報到時間待確認",
+        "09:00–16:30",
+        "08:30–09:00",
         "晶華酒店",
         "地址待確認",
         "樓層及廳別待確認",
         "財團法人保險安定基金",
         "/hero-2026.jpg",
         "保險業高階主管、風險管理與金融專業人士等受邀對象",
-        "費用待確認",
+        "免費",
         "名額待確認",
-        "報名截止時間待確認",
+        "2026 年 11 月 6 日",
         JSON.stringify({
           metro:
             "搭乘捷運淡水線（紅線）至中山站 3 號出口，步行約 6 分鐘即可抵達。",
@@ -222,7 +222,7 @@ async function seedIfEmpty() {
       .bind(
         "agenda-pending",
         eventId,
-        "活動日",
+        "會議日",
         "全天",
         "待確認",
         "待確認",
@@ -249,17 +249,17 @@ const defaultFaqs = [
     "不代表。送出後僅表示主辦單位已收到申請；若採資格審核，請以審核結果通知為準。",
   ],
   ["何時收到審核結果？", "審核時程待主辦單位確認，結果將寄至報名信箱。"],
-  ["活動是否收費？", "費用資訊待主辦單位確認。"],
+  ["會議是否收費？", "本會議免費參加，採資格審核制。"],
   [
     "可否更換出席人員？",
-    "請透過活動聯絡信箱提出申請，是否可更換由主辦單位確認。",
+    "請透過會議聯絡信箱提出申請，是否可更換由主辦單位確認。",
   ],
-  ["無法出席如何取消？", "請使用通知信中的安全連結或聯絡活動小組辦理取消。"],
+  ["無法出席如何取消？", "請使用通知信中的安全連結或聯絡會議小組辦理取消。"],
   ["是否提供餐點？", "餐點安排待確認；報名時仍可先填寫飲食需求。"],
   ["是否提供停車優惠？", "停車與優惠資訊待確認。"],
   ["是否提供進修時數或參加證明？", "相關認證與證明資訊待確認。"],
-  ["活動當天如何報到？", "審核通過者將於活動前收到專屬 QR Code 與行前通知。"],
-  ["沒有收到確認信怎麼辦？", "請先檢查垃圾郵件匣，再以報名信箱聯絡活動小組。"],
+  ["會議當天如何報到？", "審核通過者將於會議前收到專屬 QR Code 與行前通知。"],
+  ["沒有收到確認信怎麼辦？", "請先檢查垃圾郵件匣，再以報名信箱聯絡會議小組。"],
 ];
 
 const historicalDialogues = [
@@ -277,7 +277,7 @@ const historicalDialogues = [
     speakersCount: "5",
     sessionsCount: "7",
     highlights: [
-      "整體活動滿意度 4.8／5",
+      "整體會議滿意度 4.8／5",
       "場地與餐飲滿意度 4.9／5",
       "72.7% 與會者表示非常滿意",
     ],
@@ -314,7 +314,7 @@ const historicalDialogues = [
     speakersCount: "7",
     sessionsCount: "6",
     highlights: [
-      "整體活動滿意度 4.8／5",
+      "整體會議滿意度 4.8／5",
       "81.5% 與會者表示非常滿意",
       "跨國監理、產業與學術觀點同場交流",
     ],
@@ -422,7 +422,7 @@ const historicalDialogues = [
 ];
 
 async function syncConfirmed2026DetailsOnce() {
-  const version = "2026-confirmed-details-v2";
+  const version = "2026-confirmed-details-v3";
   const applied = await db()
     .prepare(
       "SELECT value FROM app_meta WHERE key = 'current_event_content_version'",
@@ -437,30 +437,248 @@ async function syncConfirmed2026DetailsOnce() {
       "飯店備有代客停車服務，地下 4、5 樓設有貴賓專用停車場，方便來賓使用。",
     accessibility: "無障礙動線待確認",
   };
-  await db().batch([
+  const eventId = "event-2026";
+  const agendaTemplates = [
+    [
+      "agenda-template-01",
+      "上午",
+      "08:30",
+      "09:00",
+      "報到",
+      "來賓報到與入場",
+      "請攜帶審核通知或 QR Code 辦理報到。",
+      "會議工作小組",
+      1,
+    ],
+    [
+      "agenda-template-02",
+      "上午",
+      "09:00",
+      "09:10",
+      "開幕",
+      "開幕與主辦單位致詞（範本）",
+      "正式致詞貴賓確認後更新。",
+      "主辦單位代表｜待確認",
+      2,
+    ],
+    [
+      "agenda-template-03",
+      "上午",
+      "09:10",
+      "10:00",
+      "專題演講",
+      "ERM 與國際監理趨勢（範本）",
+      "議題與講者確認後替換本範本。",
+      "專題講者｜待確認",
+      3,
+    ],
+    [
+      "agenda-template-04",
+      "上午",
+      "10:00",
+      "10:20",
+      "交流",
+      "交流休息",
+      "茶敘與交流時間。",
+      "全體與會者",
+      4,
+    ],
+    [
+      "agenda-template-05",
+      "上午",
+      "10:20",
+      "11:10",
+      "專題演講",
+      "資本策略與價值管理（範本）",
+      "議題與講者確認後替換本範本。",
+      "專題講者｜待確認",
+      5,
+    ],
+    [
+      "agenda-template-06",
+      "上午",
+      "11:10",
+      "12:00",
+      "高峰對談",
+      "ERM 實務與組織韌性（範本）",
+      "主持人與與談人確認後更新。",
+      "主持人／與談人｜待確認",
+      6,
+    ],
+    [
+      "agenda-template-07",
+      "下午",
+      "12:00",
+      "13:30",
+      "午餐",
+      "午餐交流",
+      "餐飲與場地安排以會前通知為準。",
+      "全體與會者",
+      7,
+    ],
+    [
+      "agenda-template-08",
+      "下午",
+      "13:30",
+      "14:20",
+      "專題演講",
+      "新興風險與永續治理（範本）",
+      "議題與講者確認後替換本範本。",
+      "專題講者｜待確認",
+      8,
+    ],
+    [
+      "agenda-template-09",
+      "下午",
+      "14:20",
+      "14:40",
+      "交流",
+      "交流休息",
+      "茶敘與交流時間。",
+      "全體與會者",
+      9,
+    ],
+    [
+      "agenda-template-10",
+      "下午",
+      "14:40",
+      "15:30",
+      "專題演講",
+      "資料與 AI 風險治理（範本）",
+      "議題與講者確認後替換本範本。",
+      "專題講者｜待確認",
+      10,
+    ],
+    [
+      "agenda-template-11",
+      "下午",
+      "15:30",
+      "16:20",
+      "綜合座談",
+      "價值導向 ERM 綜合座談（範本）",
+      "主持人與與談人確認後更新。",
+      "主持人／與談人｜待確認",
+      11,
+    ],
+    [
+      "agenda-template-12",
+      "下午",
+      "16:20",
+      "16:30",
+      "閉幕",
+      "會議總結與閉幕",
+      "主辦單位總結本日會議。",
+      "主辦單位代表｜待確認",
+      12,
+    ],
+  ];
+  const speakerTemplates = [
+    [
+      "speaker-template-01",
+      "主管機關代表（範本）",
+      "主管機關｜待確認",
+      "職稱待確認",
+      "致詞貴賓",
+      "開幕致詞（範本）",
+      1,
+    ],
+    [
+      "speaker-template-02",
+      "保險業領袖（範本）",
+      "保險機構｜待確認",
+      "職稱待確認",
+      "專題講者",
+      "ERM 與資本策略（範本）",
+      2,
+    ],
+    [
+      "speaker-template-03",
+      "風險管理專家（範本）",
+      "專業機構｜待確認",
+      "職稱待確認",
+      "專題講者",
+      "新興風險與治理（範本）",
+      3,
+    ],
+  ];
+  const statements = [
     db()
       .prepare(
-        "UPDATE events SET date_label = ?, location_name = ?, location_address = ?, organizer = ?, hero_url = ?, transport_json = ?, updated_at = ? WHERE year = 2026",
+        "UPDATE events SET name_en = ?, date_label = ?, time_label = ?, checkin_label = ?, location_name = ?, location_address = ?, organizer = ?, hero_url = ?, fee_label = ?, deadline_label = ?, transport_json = ?, updated_at = ? WHERE year = 2026",
       )
       .bind(
+        "2026 Conference on ERM in the insurance industry",
         "2026 年 11 月 16 日",
+        "09:00–16:30",
+        "08:30–09:00",
         "晶華酒店",
         "台北市中山區中山北路二段 39 巷 3 號",
         "財團法人保險安定基金",
         "/hero-2026.jpg",
+        "免費",
+        "2026 年 11 月 6 日",
         JSON.stringify(transport),
         new Date().toISOString(),
       ),
+    db().prepare("DELETE FROM agenda_items WHERE event_id = ?").bind(eventId),
+    db().prepare("DELETE FROM speakers WHERE event_id = ?").bind(eventId),
+    db()
+      .prepare(
+        "UPDATE faqs SET question = ?, answer = ? WHERE event_id = ? AND question IN ('活動是否收費？','會議是否收費？')",
+      )
+      .bind("會議是否收費？", "本會議免費參加，採資格審核制。", eventId),
+  ];
+  statements.push(
+    ...agendaTemplates.map((item) =>
+      db()
+        .prepare(
+          "INSERT INTO agenda_items (id,event_id,day_label,period,start_time,end_time,category,title,description,participants,venue,sort_order,is_visible) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1)",
+        )
+        .bind(
+          item[0],
+          eventId,
+          "會議日",
+          item[1],
+          item[2],
+          item[3],
+          item[4],
+          item[5],
+          item[6],
+          item[7],
+          "晶華酒店｜廳別待確認",
+          item[8],
+        ),
+    ),
+    ...speakerTemplates.map((item) =>
+      db()
+        .prepare(
+          "INSERT INTO speakers (id,event_id,name_zh,name_en,organization,title,speaker_type,topic,bio,photo_url,sort_order,is_visible) VALUES (?,?,?,?,?,?,?,?,?,?,?,1)",
+        )
+        .bind(
+          item[0],
+          eventId,
+          item[1],
+          "",
+          item[2],
+          item[3],
+          item[4],
+          item[5],
+          "本列為版型範本，正式姓名、職稱與簡介確認後更新。",
+          "",
+          item[6],
+        ),
+    ),
     db()
       .prepare(
         "INSERT OR REPLACE INTO app_meta (key, value) VALUES ('current_event_content_version', ?)",
       )
       .bind(version),
-  ]);
+  );
+  await db().batch(statements);
 }
 
 async function importHistoricalArchiveOnce() {
-  const version = "historical-reports-2022-2025-v1";
+  const version = "historical-reports-2022-2025-v2";
   const applied = await db()
     .prepare(
       "SELECT value FROM app_meta WHERE key = 'historical_archive_version'",
@@ -953,10 +1171,10 @@ export async function saveContent(
           String(input.themeEn || "英文主題待確認"),
           "持續對話，與產業共同前行",
           "An Ongoing Dialogue on Risk and Value",
-          String(input.dateLabel || "活動日期待確認"),
-          String(input.timeLabel || "活動時間待確認"),
+          String(input.dateLabel || "會議日期待確認"),
+          String(input.timeLabel || "會議時間待確認"),
           "報到時間待確認",
-          String(input.locationName || "活動地點待確認"),
+          String(input.locationName || "會議地點待確認"),
           "地址待確認",
           "樓層及廳別待確認",
           String(input.organizer || "主辦單位待確認"),
@@ -1037,7 +1255,7 @@ export async function saveContent(
       .bind(
         id,
         event.id,
-        String(input.dayLabel || "活動日"),
+        String(input.dayLabel || "會議日"),
         String(input.period || "全天"),
         String(input.startTime || "待確認"),
         String(input.endTime || "待確認"),

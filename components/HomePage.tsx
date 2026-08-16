@@ -103,7 +103,7 @@ export default function HomePage() {
           )}
           <div className="hero-content">
             <p className="hero-kicker">
-              <span>2026</span> INSURANCE RISK MANAGEMENT
+              <span>2026</span> ENTERPRISE RISK MANAGEMENT
             </p>
             <h1>{event.nameZh}</h1>
             <p className="hero-en">{event.nameEn}</p>
@@ -112,7 +112,7 @@ export default function HomePage() {
               <strong>{event.themeZh}</strong>
               <small>{event.themeEn}</small>
             </div>
-            <div className="hero-details" aria-label="活動重點資訊">
+            <div className="hero-details" aria-label="會議重點資訊">
               <div>
                 <span>DATE</span>
                 <b>{event.dateLabel}</b>
@@ -137,8 +137,8 @@ export default function HomePage() {
             </div>
             <p className="hero-note">
               {event.requiresApproval
-                ? "本活動採資格審核制，送出申請不代表審核通過。"
-                : "完成報名後，請留意活動通知信。"}
+                ? "本會議採資格審核制，送出申請不代表審核通過。"
+                : "完成報名後，請留意會議通知信。"}
             </p>
           </div>
           <div className="hero-index">
@@ -275,7 +275,7 @@ export default function HomePage() {
                 <div className="section-label">
                   <span>04</span> PROGRAMME
                 </div>
-                <h2>活動議程</h2>
+                <h2>會議議程</h2>
               </div>
               <div className="agenda-actions">
                 <button disabled title="待主辦單位上傳正式檔案">
@@ -354,17 +354,17 @@ export default function HomePage() {
               </p>
             </div>
             <div className="timeline">
-              <Link href="/2026" className="year current">
+              <a href="/2026" className="year current">
                 <strong>2026</strong>
                 <span>{event.themeZh}</span>
                 <i>現在</i>
-              </Link>
+              </a>
               {event.dialogues.map((d) => (
-                <Link href={`/dialogues/${d.slug}`} key={d.id} className="year">
+                <a href={`/dialogues/${d.slug}`} key={d.id} className="year">
                   <strong>{d.year}</strong>
                   <span>{d.name}</span>
                   <i>{d.isPublished ? "查看" : "整理中"}</i>
-                </Link>
+                </a>
               ))}
               <div className="year future">
                 <strong>→</strong>
@@ -380,13 +380,13 @@ export default function HomePage() {
               <div className="section-label">
                 <span>07</span> EVENT INFORMATION
               </div>
-              <h2>活動資訊</h2>
+              <h2>會議資訊</h2>
             </div>
           </div>
           <div className="info-grid">
             <dl>
               <div>
-                <dt>活動日期</dt>
+                <dt>會議日期</dt>
                 <dd>{event.dateLabel}</dd>
               </div>
               <div>
@@ -394,11 +394,11 @@ export default function HomePage() {
                 <dd>{event.checkinLabel}</dd>
               </div>
               <div>
-                <dt>活動時間</dt>
+                <dt>會議時間</dt>
                 <dd>{event.timeLabel}</dd>
               </div>
               <div>
-                <dt>活動地點</dt>
+                <dt>會議地點</dt>
                 <dd>
                   {event.locationName}
                   <small>{event.venueDetail}</small>

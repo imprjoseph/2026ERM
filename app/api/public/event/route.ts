@@ -14,7 +14,7 @@ export async function GET() {
     });
   } catch {
     return NextResponse.json(
-      { error: "活動資料暫時無法載入，請稍後再試。" },
+      { error: "會議資料暫時無法載入，請稍後再試。" },
       { status: 503 },
     );
   }

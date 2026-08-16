@@ -1,13 +1,14 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
 
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import type { EventData } from "../lib/types";
 
-const forumStartsAt = new Date("2026-11-16T00:00:00+08:00").getTime();
+const registrationDeadline = new Date("2026-11-06T23:59:59+08:00").getTime();
 
 function getCountdown(now: number) {
-  const remaining = Math.max(0, forumStartsAt - now);
+  const remaining = Math.max(0, registrationDeadline - now);
   return {
     ended: remaining === 0,
     days: Math.floor(remaining / 86_400_000),
@@ -30,7 +31,7 @@ export function useEventData(initialEvent: EventData | null = null) {
       .then(setEvent)
       .catch((reason) => {
         if (reason?.name !== "AbortError")
-          setError("活動資料暫時無法載入，請稍後重新整理。");
+          setError("會議資料暫時無法載入，請稍後重新整理。");
       });
     return () => controller.abort();
   }, []);
@@ -41,9 +42,9 @@ const navigation = [
   ["2026論壇", "/#forum"],
   ["論壇焦點", "/#focus"],
   ["講者陣容", "/2026/speakers"],
-  ["活動議程", "/2026/agenda"],
+  ["會議議程", "/2026/agenda"],
   ["歷年對話", "/dialogues"],
-  ["活動資訊", "/#info"],
+  ["會議資訊", "/#info"],
   ["常見問題", "/#faq"],
 ];
 
@@ -52,19 +53,12 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="nav-wrap">
-        <Link
-          href="/"
-          className="brand"
-          aria-label="保險業風險管理趨勢論壇首頁"
-        >
-          <span className="brand-mark" aria-hidden="true">
-            R
-          </span>
+        <a href="/" className="brand" aria-label="保險業風險管理趨勢論壇首頁">
           <span>
             <b>風險管理趨勢論壇</b>
-            <small>RISK · VALUE · DIALOGUE</small>
+            <small>ERM · VALUE · DIALOGUE</small>
           </span>
-        </Link>
+        </a>
         <button
           className="menu-button"
           onClick={() => setOpen(!open)}
@@ -79,17 +73,17 @@ export function Header() {
           aria-label="主要選單"
         >
           {navigation.map(([label, href]) => (
-            <Link key={label} href={href} onClick={() => setOpen(false)}>
+            <a key={label} href={href} onClick={() => setOpen(false)}>
               {label}
-            </Link>
+            </a>
           ))}
-          <Link
+          <a
             href="/register"
             className="nav-register"
             onClick={() => setOpen(false)}
           >
             立即報名
-          </Link>
+          </a>
         </nav>
       </div>
     </header>
@@ -119,7 +113,7 @@ export function Footer({
           <p>協辦／執行單位｜待確認</p>
         </div>
         <div>
-          <h3>活動聯絡</h3>
+          <h3>會議聯絡</h3>
           <p>電話｜待確認</p>
           <p>信箱｜待確認</p>
           <div className="footer-links">
@@ -161,7 +155,7 @@ export function RegistrationCountdown({
   if (countdown.ended)
     return (
       <div className={compact ? "countdown compact" : "countdown"}>
-        <strong>活動日已到</strong>
+        <strong>報名已截止</strong>
       </div>
     );
   const values = [
@@ -187,7 +181,7 @@ export function RegistrationCountdown({
       </div>
       {!compact && (
         <small className="countdown-note">
-          倒數至 11/16 活動日；正式截止時間以主辦單位公告為準。
+          倒數至 11/6 報名截止；截止日期以主辦單位公告為準。
         </small>
       )}
     </div>

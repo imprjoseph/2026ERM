@@ -14,6 +14,7 @@ body .hero {
   width: min(49vw, 900px);
   margin: 0;
   transform: translateY(-50%);
+  pointer-events: none;
 }
 .hero-visual img {
   width: 100%;
@@ -77,6 +78,22 @@ body .hero {
   color: #fff;
   box-shadow: 0 20px 50px rgba(5, 28, 25, 0.3);
   border: 1px solid rgba(199, 166, 106, 0.55);
+}
+.site-header .nav-wrap,
+.site-header .brand,
+.site-header .nav-links,
+.hero-actions,
+.timeline .year,
+.archive-list > a {
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
+}
+.hero-orbit,
+.hero-axis,
+.hero-index,
+.page-hero::after {
+  pointer-events: none;
 }
 .floating-registration .countdown {
   margin: 0;

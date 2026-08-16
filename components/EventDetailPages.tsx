@@ -63,8 +63,8 @@ export function SpeakersPage() {
           </div>
         )}
         <div className="back-cta">
-          <p>先掌握本年度論壇的關鍵議題與活動安排。</p>
-          <Link href="/2026/agenda">查看活動議程 →</Link>
+          <p>先掌握本年度論壇的關鍵議題與會議安排。</p>
+          <a href="/2026/agenda">查看會議議程 →</a>
         </div>
       </section>
     </PageShell>
@@ -84,7 +84,7 @@ export function AgendaPage() {
       <section className="page-hero">
         <div>
           <span className="eyebrow light">2026 PROGRAMME</span>
-          <h1>活動議程</h1>
+          <h1>會議議程</h1>
           <p>以年度焦點串連專題演講與高峰對談，完整議程將於確認後公布。</p>
         </div>
       </section>
@@ -140,10 +140,10 @@ function downloadCalendar(title: string) {
     "BEGIN:VEVENT",
     "UID:2026-forum@irmf.local",
     "SUMMARY:" + title,
-    "DESCRIPTION:活動時間與晶華酒店詳細廳別待主辦單位公告。",
+    "DESCRIPTION:會議時間 09:00–16:30；晶華酒店詳細廳別待主辦單位公告。",
     "LOCATION:晶華酒店",
-    "DTSTART;VALUE=DATE:20261116",
-    "DTEND;VALUE=DATE:20261117",
+    "DTSTART;TZID=Asia/Taipei:20261116T090000",
+    "DTEND;TZID=Asia/Taipei:20261116T163000",
     "STATUS:CONFIRMED",
     "END:VEVENT",
     "END:VCALENDAR",
@@ -176,7 +176,7 @@ export function DialoguesPage({
         <div>
           <span className="eyebrow light">ONGOING DIALOGUES</span>
           <h1>歷年對話</h1>
-          <p>不只是活動相簿，而是一套持續累積的產業觀點資料庫。</p>
+          <p>不只是會議相簿，而是一套持續累積的產業觀點資料庫。</p>
         </div>
       </section>
       <section className="section inner-section">
@@ -191,7 +191,7 @@ export function DialoguesPage({
           </p>
         </div>
         <div className="archive-list">
-          <Link href="/2026">
+          <a href="/2026">
             <strong>2026</strong>
             <div>
               <span>目前年度</span>
@@ -199,9 +199,9 @@ export function DialoguesPage({
               <p>{event.themeZh}</p>
             </div>
             <i>→</i>
-          </Link>
+          </a>
           {event.dialogues.map((d) => (
-            <Link href={`/dialogues/${d.slug}`} key={d.id}>
+            <a href={`/dialogues/${d.slug}`} key={d.id}>
               <strong>{d.year}</strong>
               <div>
                 <span>{d.isPublished ? "年度回顧" : "資料整理中"}</span>
@@ -209,7 +209,7 @@ export function DialoguesPage({
                 <p>{d.theme}</p>
               </div>
               <i>→</i>
-            </Link>
+            </a>
           ))}
         </div>
       </section>
@@ -333,7 +333,7 @@ export function DialogueDetail({
           </section>
         )}
         <p className="legal-note">
-          資料依該年度結案報告之公開活動內容整理；不包含簽到名冊、Email
+          資料依該年度結案報告之公開會議內容整理；不包含簽到名冊、Email
           或其他與會者個人資料。
         </p>
         <div className="back-cta">
@@ -357,11 +357,11 @@ export function LegalPage({
     ],
     personal: [
       "個人資料蒐集及利用告知事項",
-      "為辦理活動報名、資格審核、通知、報到及會後聯繫，系統將蒐集報名者提供的聯絡與服務需求資料。保存期間、利用地區、對象、方式及當事人權利等正式文字，需由主辦單位依法務意見確認。",
+      "為辦理會議報名、資格審核、通知、報到及會後聯繫，系統將蒐集報名者提供的聯絡與服務需求資料。保存期間、利用地區、對象、方式及當事人權利等正式文字，需由主辦單位依法務意見確認。",
     ],
     terms: [
       "網站使用條款",
-      "網站內容、活動資訊與服務條件以主辦單位正式公告為準。未確認資料均清楚標示；主辦單位保留活動調整權利。正式條款需由主辦單位確認。",
+      "網站內容、會議資訊與服務條件以主辦單位正式公告為準。未確認資料均清楚標示；主辦單位保留會議調整權利。正式條款需由主辦單位確認。",
     ],
   }[kind];
   return (
@@ -377,7 +377,7 @@ export function LegalPage({
         <p>{content[1]}</p>
         <h2>您的權利與聯繫方式</h2>
         <p>
-          如需查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除個人資料，請透過活動聯絡方式提出。正式聯絡窗口待確認。
+          如需查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除個人資料，請透過會議聯絡方式提出。正式聯絡窗口待確認。
         </p>
         <h2>資料安全與保存</h2>
         <p>
