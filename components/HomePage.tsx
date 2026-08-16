@@ -444,10 +444,6 @@ export default function HomePage({
               <span>停車</span>
               <p>{event.transport.parking}</p>
             </div>
-            <div>
-              <span>無障礙</span>
-              <p>{event.transport.accessibility}</p>
-            </div>
           </div>
         </section>
 

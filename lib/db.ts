@@ -178,7 +178,7 @@ async function seedIfEmpty() {
           bus: "搭乘 218、220、221、227、247、260、261、287、310、636，於國賓飯店站下車，步行約 3 分鐘即可抵達。",
           walk: "由捷運中山站 3 號出口步行約 6 分鐘。",
           parking: "飯店備有代客停車服務，地下 4、5 樓設有貴賓專用停車場。",
-          accessibility: "無障礙動線待確認",
+          accessibility: "",
         }),
         now,
         now,
@@ -445,7 +445,7 @@ const historicalPhotoUrls: Record<number, string[]> = {
 };
 
 async function syncConfirmed2026DetailsOnce() {
-  const version = "2026-confirmed-details-v6";
+  const version = "2026-confirmed-details-v7";
   const applied = await db()
     .prepare(
       "SELECT value FROM app_meta WHERE key = 'current_event_content_version'",
@@ -458,7 +458,7 @@ async function syncConfirmed2026DetailsOnce() {
     walk: "由捷運中山站 3 號出口步行約 6 分鐘。",
     parking:
       "飯店備有代客停車服務，地下 4、5 樓設有貴賓專用停車場，方便來賓使用。",
-    accessibility: "無障礙動線待確認",
+    accessibility: "",
   };
   const eventId = "event-2026";
   const agendaTemplates = [
@@ -1232,7 +1232,7 @@ export async function saveContent(
             bus: "公車資訊待確認",
             walk: "步行方式待確認",
             parking: "停車資訊待確認",
-            accessibility: "無障礙動線待確認",
+            accessibility: "",
           }),
           now,
           now,
