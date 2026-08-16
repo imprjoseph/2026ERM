@@ -442,10 +442,6 @@ export function DialogueDetail({
             </div>
           </section>
         )}
-        <p className="legal-note">
-          資料依該年度結案報告之公開會議內容整理；不包含簽到名冊、Email
-          或其他與會者個人資料。
-        </p>
         <div className="back-cta">
           <p>返回目前年度，繼續參與產業對話。</p>
           <Link href="/register">前往 2026 論壇報名 →</Link>

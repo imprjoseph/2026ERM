@@ -83,6 +83,8 @@ test("歷年頁不顯示年度成果，首頁使用緊湊版面範圍", async ()
   assert.match(home, /<main className="home-page">/);
   assert.doesNotMatch(detail, /年度成果/);
   assert.doesNotMatch(detail, /dialogue\.highlights\.map/);
+  assert.doesNotMatch(detail, /資料依該年度結案報告/);
+  assert.doesNotMatch(detail, /與會者個人資料/);
   assert.match(enhancements, /\.home-page \.timeline \.year/);
   assert.match(enhancements, /\.home-page \.quick-registration-section/);
 });
