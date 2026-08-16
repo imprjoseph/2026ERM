@@ -55,6 +55,20 @@ test("議程開始與結束時間使用一致的 HH:mm 區間格式", async () =
   assert.doesNotMatch(home, /<small>\{item\.endTime\}<\/small>/);
   assert.doesNotMatch(detail, /<small>\{item\.endTime\}<\/small>/);
 });
+test("首頁與完整議程皆使用時間項目講者三欄表格", async () => {
+  const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
+  const detail = await readFile(
+    new URL("components/EventDetailPages.tsx", root),
+    "utf8",
+  );
+  for (const source of [home, detail]) {
+    assert.match(source, /className="agenda-table/);
+    assert.match(source, /<th scope="col">時間<\/th>/);
+    assert.match(source, /<th scope="col">項目<\/th>/);
+    assert.match(source, /<th scope="col">講者<\/th>/);
+    assert.match(source, /agenda-speaker-cell/);
+  }
+});
 test("會議資訊移除費用名額列並確認三樓宴會廳", async () => {
   const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
   const database = await readFile(new URL("lib/db.ts", root), "utf8");

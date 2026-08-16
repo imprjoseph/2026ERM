@@ -192,24 +192,38 @@ export function AgendaPage({
             </button>
           </div>
         </div>
-        <div className="agenda-list full">
-          {event.agenda
-            .filter((a) => a.isVisible)
-            .map((item) => (
-              <article key={item.id}>
-                <time>
-                  {item.startTime}–{item.endTime}
-                </time>
-                <div>
-                  <span>{item.category}</span>
-                  <h2>{item.title}</h2>
-                  <p>{item.description}</p>
-                  <small>
-                    {item.participants} · {item.venue}
-                  </small>
-                </div>
-              </article>
-            ))}
+        <div className="agenda-table-wrap">
+          <table className="agenda-table full" aria-label="2026 完整會議議程">
+            <thead>
+              <tr>
+                <th scope="col">時間</th>
+                <th scope="col">項目</th>
+                <th scope="col">講者</th>
+              </tr>
+            </thead>
+            <tbody>
+              {event.agenda
+                .filter((a) => a.isVisible)
+                .map((item) => (
+                  <tr key={item.id}>
+                    <td>
+                      <time className="agenda-time">
+                        {item.startTime}–{item.endTime}
+                      </time>
+                    </td>
+                    <td className="agenda-item-cell">
+                      <span>{item.category}</span>
+                      <h2>{item.title}</h2>
+                      <p>{item.description}</p>
+                      {item.venue && <small>{item.venue}</small>}
+                    </td>
+                    <td className="agenda-speaker-cell">
+                      <strong>{item.participants || "待確認"}</strong>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
         <p className="fineprint">
           主辦單位保留議程及講者調整權利。正式日期與時間確認前，行事曆檔案僅保留功能入口。

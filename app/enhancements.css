@@ -4,6 +4,101 @@ body .hero {
   padding-right: max(4vw, 28px);
 }
 
+/* Agenda uses three consistent columns: time, item and speaker */
+.agenda-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-top: 1px solid var(--ink);
+}
+.agenda-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.agenda-table th,
+.agenda-table td {
+  border-bottom: 1px solid #c6c8c0;
+  padding: 18px 16px;
+  text-align: left;
+  vertical-align: top;
+}
+.agenda-table th {
+  color: #53635f;
+  background: rgba(19, 43, 41, 0.045);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+.agenda-table th:first-child,
+.agenda-table td:first-child {
+  width: 165px;
+  padding-left: 0;
+}
+.agenda-table th:last-child,
+.agenda-table td:last-child {
+  width: 28%;
+  padding-right: 0;
+}
+.agenda-time {
+  color: #7b6135;
+  white-space: nowrap;
+  font:
+    21px Georgia,
+    serif;
+}
+.agenda-item-cell > span {
+  color: #7b6135;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+.agenda-item-cell h2,
+.agenda-item-cell h3 {
+  margin: 4px 0;
+  font:
+    600 21px var(--font-serif),
+    serif;
+}
+.agenda-item-cell p {
+  margin: 4px 0 7px;
+  color: var(--gray);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.agenda-item-cell small {
+  color: #62716d;
+}
+.agenda-speaker-cell strong {
+  display: block;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .agenda-table {
+    min-width: 600px;
+  }
+  .agenda-table th,
+  .agenda-table td {
+    padding: 14px 12px;
+  }
+  .agenda-table th:first-child,
+  .agenda-table td:first-child {
+    width: 125px;
+  }
+  .agenda-table th:last-child,
+  .agenda-table td:last-child {
+    width: 170px;
+  }
+  .agenda-time {
+    font-size: 17px;
+  }
+  .agenda-item-cell h2,
+  .agenda-item-cell h3 {
+    font-size: 18px;
+  }
+}
+
 /* Compact priority sections and reliable navigation feedback */
 .dialogue-band .section {
   padding-top: 48px;

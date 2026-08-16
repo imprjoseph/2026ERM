@@ -287,22 +287,36 @@ export default function HomePage({
                 </button>
               ))}
             </div>
-            <div className="agenda-list">
-              {agenda.map((item) => (
-                <article key={item.id}>
-                  <time>
-                    {item.startTime}–{item.endTime}
-                  </time>
-                  <div>
-                    <span>{item.category}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.description}</p>
-                    <small>
-                      {item.participants} · {item.venue}
-                    </small>
-                  </div>
-                </article>
-              ))}
+            <div className="agenda-table-wrap">
+              <table className="agenda-table" aria-label="2026 會議議程">
+                <thead>
+                  <tr>
+                    <th scope="col">時間</th>
+                    <th scope="col">項目</th>
+                    <th scope="col">講者</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {agenda.map((item) => (
+                    <tr key={item.id}>
+                      <td>
+                        <time className="agenda-time">
+                          {item.startTime}–{item.endTime}
+                        </time>
+                      </td>
+                      <td className="agenda-item-cell">
+                        <span>{item.category}</span>
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                        {item.venue && <small>{item.venue}</small>}
+                      </td>
+                      <td className="agenda-speaker-cell">
+                        <strong>{item.participants || "待確認"}</strong>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
             <p className="fineprint">主辦單位保留議程及講者調整權利。</p>
           </div>
