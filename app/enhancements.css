@@ -260,6 +260,10 @@ html.navigation-pending .site-header::after {
   min-width: 0;
   flex-direction: column;
 }
+.speaker-card .speaker-photo {
+  width: 50%;
+  max-width: 110px;
+}
 .agenda-list time {
   white-space: nowrap;
 }
@@ -301,7 +305,7 @@ html.navigation-pending .site-header::after {
 }
 .speaker-detail-section {
   display: grid;
-  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  grid-template-columns: 150px minmax(0, 1fr);
   gap: 72px;
   align-items: start;
 }
@@ -311,7 +315,8 @@ html.navigation-pending .site-header::after {
   aspect-ratio: 4 / 5;
   place-items: center;
   background: #d7dfd7;
-  max-width: 300px;
+  width: 150px;
+  max-width: 150px;
 }
 .speaker-detail-photo img {
   width: 100%;
@@ -410,7 +415,8 @@ html.navigation-pending .site-header::after {
     gap: 36px;
   }
   .speaker-detail-photo {
-    max-width: 280px;
+    width: 140px;
+    max-width: 140px;
   }
   .speaker-facts > div {
     grid-template-columns: 92px 1fr;
