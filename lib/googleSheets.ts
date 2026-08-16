@@ -75,6 +75,11 @@ export async function applyGoogleSheetEventOverrides(
       "locationAddress",
       "venueDetail",
       "organizer",
+      "guidingOrganization",
+      "planningOrganization",
+      "coOrganizers",
+      "contactPhone",
+      "contactEmail",
       "audience",
       "feeLabel",
       "capacityLabel",
@@ -107,6 +112,28 @@ export async function applyGoogleSheetEventOverrides(
     if (Array.isArray(patch.speakers))
       safe.speakers = patch.speakers as EventData["speakers"];
     if (Array.isArray(patch.faqs)) safe.faqs = patch.faqs as EventData["faqs"];
+    if (Array.isArray(patch.dialogues)) {
+      const overrides = patch.dialogues.filter(isRecord);
+      safe.dialogues = base.dialogues.map((dialogue) => {
+        const override = overrides.find(
+          (item) => Number(item.year) === dialogue.year,
+        );
+        if (!override) return dialogue;
+        const photoUrls = Array.isArray(override.photoUrls)
+          ? override.photoUrls.filter(
+              (url): url is string => typeof url === "string" && Boolean(url),
+            )
+          : [];
+        return {
+          ...dialogue,
+          ...override,
+          year: dialogue.year,
+          id: dialogue.id,
+          slug: dialogue.slug,
+          photoUrls: photoUrls.length ? photoUrls : dialogue.photoUrls,
+        } as EventData["dialogues"][number];
+      });
+    }
     return { ...base, ...safe };
   } catch (error) {
     console.error("Google Sheets content sync unavailable", error);

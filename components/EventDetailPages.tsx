@@ -3,9 +3,15 @@
 
 import Link from "next/link";
 import { PageShell, LoadingState, useEventData } from "./SiteShell";
+import SpeakerCard from "./SpeakerCard";
+import type { EventData } from "../lib/types";
 
-export function SpeakersPage() {
-  const { event, error } = useEventData();
+export function SpeakersPage({
+  initialEvent = null,
+}: {
+  initialEvent?: EventData | null;
+}) {
+  const { event, error } = useEventData(initialEvent);
   if (!event)
     return (
       <PageShell>
@@ -29,25 +35,7 @@ export function SpeakersPage() {
         {speakers.length ? (
           <div className="speaker-grid detailed">
             {speakers.map((s) => (
-              <article className="speaker-card" key={s.id}>
-                <div className="speaker-photo">
-                  {s.photoUrl ? (
-                    <img src={s.photoUrl} alt={`${s.nameZh}講者照片`} />
-                  ) : (
-                    <span>{s.nameZh.slice(0, 1)}</span>
-                  )}
-                </div>
-                <p>{s.type}</p>
-                <h2>{s.nameZh}</h2>
-                <small>{s.nameEn}</small>
-                <strong>
-                  {s.organization}｜{s.title}
-                </strong>
-                <div className="speaker-bio">
-                  <b>{s.topic}</b>
-                  <p>{s.bio}</p>
-                </div>
-              </article>
+              <SpeakerCard speaker={s} headingLevel="h2" key={s.id} />
             ))}
           </div>
         ) : (
@@ -65,6 +53,102 @@ export function SpeakersPage() {
         <div className="back-cta">
           <p>先掌握本年度論壇的關鍵議題與會議安排。</p>
           <a href="/2026/agenda">查看會議議程 →</a>
+        </div>
+      </section>
+    </PageShell>
+  );
+}
+
+export function SpeakerDetail({
+  speakerId,
+  initialEvent = null,
+}: {
+  speakerId: string;
+  initialEvent?: EventData | null;
+}) {
+  const { event, error } = useEventData(initialEvent);
+  if (!event)
+    return (
+      <PageShell>
+        <LoadingState error={error} />
+      </PageShell>
+    );
+
+  const speaker = event.speakers.find(
+    (candidate) => candidate.id === speakerId && candidate.isVisible,
+  );
+  if (!speaker)
+    return (
+      <PageShell organizer={event.organizer}>
+        <section className="section missing">
+          <h1>找不到這位講者的資料</h1>
+          <Link href="/2026/speakers">返回講者陣容</Link>
+        </section>
+      </PageShell>
+    );
+
+  const isTemplate = speaker.nameZh.includes("範本");
+  return (
+    <PageShell organizer={event.organizer}>
+      <section className="page-hero speaker-detail-hero">
+        <div>
+          <span className="eyebrow light">2026 SPEAKER PROFILE</span>
+          <h1>{speaker.nameZh}</h1>
+          <p>
+            {speaker.organization}｜{speaker.title}
+          </p>
+        </div>
+      </section>
+      <section className="section speaker-detail-section">
+        <div className="speaker-detail-photo">
+          {speaker.photoUrl ? (
+            <img src={speaker.photoUrl} alt={`${speaker.nameZh}講者照片`} />
+          ) : (
+            <span>{speaker.nameZh.slice(0, 1)}</span>
+          )}
+        </div>
+        <div className="speaker-detail-content">
+          {isTemplate && (
+            <p className="speaker-template-note">
+              此頁為講者資料版型範本，正式姓名、照片、單位、職稱、講題與簡介將於確認後更新。
+            </p>
+          )}
+          <dl className="speaker-facts">
+            <div>
+              <dt>單位</dt>
+              <dd>{speaker.organization || "待確認"}</dd>
+            </div>
+            <div>
+              <dt>姓名</dt>
+              <dd>{speaker.nameZh}</dd>
+            </div>
+            {speaker.nameEn && (
+              <div>
+                <dt>英文姓名</dt>
+                <dd>{speaker.nameEn}</dd>
+              </div>
+            )}
+            <div>
+              <dt>職稱</dt>
+              <dd>{speaker.title || "待確認"}</dd>
+            </div>
+            <div>
+              <dt>講者類型</dt>
+              <dd>{speaker.type || "待確認"}</dd>
+            </div>
+          </dl>
+          <div className="speaker-profile-block">
+            <span className="eyebrow">TOPIC</span>
+            <h2>{speaker.topic || "講題待確認"}</h2>
+          </div>
+          <div className="speaker-profile-block">
+            <span className="eyebrow">PROFILE</span>
+            <h2>講者簡介</h2>
+            <p>{speaker.bio || "講者簡介待確認"}</p>
+          </div>
+          <Link className="speaker-back-link" href="/2026/speakers">
+            ← 返回講者陣容
+          </Link>
         </div>
       </section>
     </PageShell>
@@ -293,6 +377,26 @@ export function DialogueDetail({
             <span>場次數</span>
           </div>
         </div>
+        {dialogue.photoUrls.length > 0 && (
+          <section className="history-block history-gallery-block">
+            <span className="eyebrow">PHOTO GALLERY</span>
+            <h2>會議現場</h2>
+            <div className="history-gallery">
+              {dialogue.photoUrls.map((url, index) => (
+                <figure key={url}>
+                  <img
+                    src={url}
+                    alt={`${dialogue.year}年保險業風險管理趨勢論壇會議現場照片 ${index + 1}`}
+                    loading="lazy"
+                  />
+                  <figcaption>
+                    {dialogue.year} 保險業風險管理趨勢論壇
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
         {dialogue.highlights.length > 0 && (
           <section className="history-block">
             <span className="eyebrow">HIGHLIGHTS</span>
@@ -377,7 +481,8 @@ export function LegalPage({
         <p>{content[1]}</p>
         <h2>您的權利與聯繫方式</h2>
         <p>
-          如需查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除個人資料，請透過會議聯絡方式提出。正式聯絡窗口待確認。
+          如需查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除個人資料，請致電
+          02-27635666 分機 106，或寄信至 penny@impr.com.tw。
         </p>
         <h2>資料安全與保存</h2>
         <p>

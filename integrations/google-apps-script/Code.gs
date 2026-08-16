@@ -85,6 +85,11 @@ function readEvent() {
       locationAddress: settings.address,
       venueDetail: settings.venue_detail,
       organizer: settings.organizer,
+      guidingOrganization: settings.guiding_organization,
+      planningOrganization: settings.planning_organization,
+      coOrganizers: settings.co_organizers,
+      contactPhone: settings.contact_phone,
+      contactEmail: settings.contact_email,
       audience: settings.audience,
       feeLabel: settings.fee,
       capacityLabel: settings.capacity,
@@ -98,6 +103,7 @@ function readEvent() {
       agenda: readAgenda(spreadsheet.getSheetByName("2026議程")),
       speakers: readSpeakers(spreadsheet.getSheetByName("2026講者")),
       faqs: readFaqs(spreadsheet.getSheetByName("FAQ")),
+      dialogues: readDialogues(spreadsheet.getSheetByName("歷年論壇")),
     },
   });
 }
@@ -177,6 +183,37 @@ function readFaqs(sheet) {
         question: row[1],
         answer: row[2],
         isVisible: row[3] === "是",
+      };
+    });
+}
+
+function readDialogues(sheet) {
+  return tableRows(sheet, 11)
+    .filter(function (row) {
+      return row[0];
+    })
+    .map(function (row) {
+      const date =
+        row[2] instanceof Date
+          ? Utilities.formatDate(row[2], "Asia/Taipei", "yyyy 年 M 月 d 日")
+          : row[2];
+      return {
+        year: Number(row[0]),
+        theme: row[1],
+        dateLabel: date,
+        location: row[3],
+        participantsCount: row[4],
+        speakersCount: row[5],
+        sessionsCount: row[6],
+        speakers: String(row[8] || "")
+          .split("、")
+          .filter(Boolean),
+        agenda: String(row[9] || "")
+          .split("；")
+          .filter(Boolean),
+        photoUrls: String(row[10] || "")
+          .split(/\s*[；;,\n]\s*/)
+          .filter(Boolean),
       };
     });
 }

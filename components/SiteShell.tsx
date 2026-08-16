@@ -91,10 +91,25 @@ export function Header() {
 }
 
 export function Footer({
-  organizer = "主辦單位待確認",
+  organizer = "財團法人保險安定基金",
 }: {
   organizer?: string;
 }) {
+  const { event } = useEventData();
+  const guidingOrganization =
+    event?.guidingOrganization || "金融監督管理委員會";
+  const planningOrganization =
+    event?.planningOrganization || "金融監督管理委員會保險局";
+  const displayedOrganizer = event?.organizer || organizer;
+  const coOrganizers = (
+    event?.coOrganizers || "財團法人保險事業發展中心；中華民國精算學會"
+  )
+    .split(/[；;\n]/)
+    .map((name) => name.trim())
+    .filter(Boolean);
+  const contactPhone = event?.contactPhone || "02-27635666#106";
+  const contactEmail = event?.contactEmail || "penny@impr.com.tw";
+
   return (
     <footer className="site-footer">
       <div className="footer-grid">
@@ -108,14 +123,21 @@ export function Footer({
         </div>
         <div>
           <h3>主辦資訊</h3>
-          <p>指導單位｜待確認</p>
-          <p>主辦單位｜{organizer}</p>
-          <p>協辦／執行單位｜待確認</p>
+          <p>指導單位｜{guidingOrganization}</p>
+          <p>策畫單位｜{planningOrganization}</p>
+          <p>主辦單位｜{displayedOrganizer}</p>
+          {coOrganizers.map((name) => (
+            <p key={name}>協辦單位｜{name}</p>
+          ))}
         </div>
         <div>
           <h3>會議聯絡</h3>
-          <p>電話｜待確認</p>
-          <p>信箱｜待確認</p>
+          <p>
+            電話｜<a href="tel:+886227635666,106">{contactPhone}</a>
+          </p>
+          <p>
+            信箱｜<a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          </p>
           <div className="footer-links">
             <Link href="/privacy">隱私權政策</Link>
             <Link href="/personal-data">個資告知</Link>

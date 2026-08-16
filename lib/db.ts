@@ -421,6 +421,29 @@ const historicalDialogues = [
   },
 ];
 
+const historicalPhotoUrls: Record<number, string[]> = {
+  2025: [
+    "/history/2025-forum-01.jpg",
+    "/history/2025-forum-02.jpg",
+    "/history/2025-forum-03.jpg",
+  ],
+  2024: [
+    "/history/2024-forum-01.jpg",
+    "/history/2024-forum-02.jpg",
+    "/history/2024-forum-03.jpg",
+  ],
+  2023: [
+    "/history/2023-forum-01.jpg",
+    "/history/2023-forum-02.jpg",
+    "/history/2023-forum-03.jpg",
+  ],
+  2022: [
+    "/history/2022-forum-01.jpg",
+    "/history/2022-forum-02.jpg",
+    "/history/2022-forum-03.jpg",
+  ],
+};
+
 async function syncConfirmed2026DetailsOnce() {
   const version = "2026-confirmed-details-v3";
   const applied = await db()
@@ -784,6 +807,11 @@ export async function getCurrentEvent(): Promise<EventData> {
     locationAddress: String(event.location_address),
     venueDetail: String(event.venue_detail),
     organizer: String(event.organizer),
+    guidingOrganization: "金融監督管理委員會",
+    planningOrganization: "金融監督管理委員會保險局",
+    coOrganizers: "財團法人保險事業發展中心；中華民國精算學會",
+    contactPhone: "02-27635666#106",
+    contactEmail: "penny@impr.com.tw",
     heroUrl: String(event.hero_url || ""),
     audience: String(event.audience),
     feeLabel: String(event.fee_label),
@@ -852,6 +880,7 @@ export async function getCurrentEvent(): Promise<EventData> {
       highlights: parseStringArray(r.highlights_json),
       speakers: parseStringArray(r.speakers_json),
       agenda: parseStringArray(r.agenda_json),
+      photoUrls: historicalPhotoUrls[Number(r.year)] ?? [],
     })),
   };
 }

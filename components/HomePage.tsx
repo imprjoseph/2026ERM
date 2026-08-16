@@ -12,6 +12,7 @@ import {
   useEventData,
 } from "./SiteShell";
 import QuickRegistrationForm from "./QuickRegistrationForm";
+import SpeakerCard from "./SpeakerCard";
 
 const values = [
   [
@@ -238,23 +239,7 @@ export default function HomePage() {
                 .filter((s) => s.isVisible)
                 .slice(0, 4)
                 .map((speaker) => (
-                  <article className="speaker-card" key={speaker.id}>
-                    <div className="speaker-photo">
-                      {speaker.photoUrl ? (
-                        <img
-                          src={speaker.photoUrl}
-                          alt={`${speaker.nameZh}講者照片`}
-                        />
-                      ) : (
-                        <span>{speaker.nameZh.slice(0, 1)}</span>
-                      )}
-                    </div>
-                    <p>{speaker.type}</p>
-                    <h3>{speaker.nameZh}</h3>
-                    <span>
-                      {speaker.organization}｜{speaker.title}
-                    </span>
-                  </article>
+                  <SpeakerCard speaker={speaker} key={speaker.id} />
                 ))}
             </div>
           ) : (

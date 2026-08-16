@@ -10,9 +10,39 @@ test("核心公開與管理路由存在", async () => {
     "app/admin/page.tsx",
     "app/admin/check-in/page.tsx",
     "app/2026/agenda/page.tsx",
+    "app/2026/speakers/[id]/page.tsx",
     "app/dialogues/[year]/page.tsx",
   ])
     await access(new URL(path, root));
+});
+test("講者卡片提供指定欄位與詳細資料入口", async () => {
+  const card = await readFile(
+    new URL("components/SpeakerCard.tsx", root),
+    "utf8",
+  );
+  assert.match(card, /speaker-photo/);
+  assert.match(card, /speaker-organization/);
+  assert.match(card, /speaker\.nameZh/);
+  assert.match(card, /speaker-title/);
+  assert.match(card, /查看詳細/);
+  assert.match(card, /\/2026\/speakers\/\$\{encodeURIComponent/);
+});
+test("歷年頁提供照片，頁尾使用完整單位名稱與聯絡資訊", async () => {
+  const detail = await readFile(
+    new URL("components/EventDetailPages.tsx", root),
+    "utf8",
+  );
+  const shell = await readFile(
+    new URL("components/SiteShell.tsx", root),
+    "utf8",
+  );
+  assert.match(detail, /history-gallery/);
+  assert.match(shell, /金融監督管理委員會保險局/);
+  assert.match(shell, /財團法人保險事業發展中心/);
+  assert.match(shell, /中華民國精算學會/);
+  assert.match(shell, /02-27635666/);
+  assert.match(shell, /penny@impr\.com\.tw/);
+  assert.doesNotMatch(shell, /執行單位/);
 });
 test("敏感設定只出現在環境變數範本", async () => {
   const source = await readFile(new URL("lib/auth.ts", root), "utf8");

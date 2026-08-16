@@ -17,6 +17,11 @@ export type EventData = {
   locationAddress: string;
   venueDetail: string;
   organizer: string;
+  guidingOrganization: string;
+  planningOrganization: string;
+  coOrganizers: string;
+  contactPhone: string;
+  contactEmail: string;
   heroUrl: string;
   audience: string;
   feeLabel: string;
@@ -102,6 +107,7 @@ export type DialogueData = {
   highlights: string[];
   speakers: string[];
   agenda: string[];
+  photoUrls: string[];
 };
 
 export const REGISTRATION_STATUSES = [
