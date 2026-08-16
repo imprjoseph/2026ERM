@@ -32,9 +32,9 @@ test("講者卡片提供指定欄位與詳細資料入口", async () => {
   );
   assert.match(
     enhancements,
-    /\.speaker-card \.speaker-photo \{[\s\S]*width: 50%/,
+    /\.speaker-card \.speaker-photo \{[\s\S]*width: 62\.5%/,
   );
-  assert.match(enhancements, /\.speaker-detail-photo \{[\s\S]*width: 150px/);
+  assert.match(enhancements, /\.speaker-detail-photo \{[\s\S]*width: 188px/);
 });
 test("歷年頁提供照片，頁尾使用完整單位名稱與聯絡資訊", async () => {
   const detail = await readFile(
