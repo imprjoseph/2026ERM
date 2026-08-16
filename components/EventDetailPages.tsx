@@ -215,7 +215,6 @@ export function AgendaPage({
                       <span>{item.category}</span>
                       <h2>{item.title}</h2>
                       <p>{item.description}</p>
-                      {item.venue && <small>{item.venue}</small>}
                     </td>
                     <td className="agenda-speaker-cell">
                       <strong>{item.participants || "待確認"}</strong>

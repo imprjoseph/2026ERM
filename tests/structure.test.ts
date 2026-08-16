@@ -67,6 +67,7 @@ test("首頁與完整議程皆使用時間項目講者三欄表格", async () =>
     assert.match(source, /<th scope="col">項目<\/th>/);
     assert.match(source, /<th scope="col">講者<\/th>/);
     assert.match(source, /agenda-speaker-cell/);
+    assert.doesNotMatch(source, /item\.venue/);
   }
 });
 test("歷年頁不顯示年度成果，首頁使用緊湊版面範圍", async () => {
