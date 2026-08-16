@@ -418,11 +418,20 @@ export default function HomePage() {
                 <dd>{event.deadlineLabel}</dd>
               </div>
             </dl>
-            <div className="map-placeholder">
-              <div className="map-grid" />
-              <span>MAP</span>
-              <strong>{event.locationName}</strong>
-              <p>{event.locationAddress}</p>
+            <div className="map-embed">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1176.5649025479272!2d121.52218166672672!3d25.05417797780344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a968fd15c21d%3A0x1b494fb2ade1569a!2z5pm26I-v6YWS5bqX!5e1!3m2!1szh-TW!2stw!4v1786840543814!5m2!1szh-TW!2stw"
+                title="晶華酒店 Google 地圖"
+                width="600"
+                height="450"
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+              <div>
+                <strong>{event.locationName}</strong>
+                <span>{event.locationAddress}</span>
+              </div>
             </div>
           </div>
           <div className="transport-grid">

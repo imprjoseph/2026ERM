@@ -148,7 +148,112 @@ body .hero {
   padding: 8px 11px;
   background: #e9ece5;
   color: #42524f;
-  font-size: 12px;
+  font-size: 14px;
+}
+
+/* Balanced public-site typography */
+body {
+  font-size: 16px;
+  line-height: 1.65;
+}
+.nav-links > a {
+  font-size: 14px;
+}
+.hero h1 {
+  font-size: clamp(38px, 4.2vw, 58px);
+  line-height: 1.18;
+}
+.hero-details b,
+.hero-note {
+  font-size: 14px;
+}
+.about-grid h2,
+.dialogue-band h2,
+.section-heading h2,
+.attend-grid h2,
+.register-cta h2 {
+  font-size: clamp(34px, 3.6vw, 50px);
+}
+.page-hero h1 {
+  font-size: clamp(40px, 5vw, 64px);
+}
+.year-hero h1 {
+  font-size: clamp(58px, 7vw, 82px);
+}
+.archive-intro h2,
+.year-summary h2,
+.faq-grid h2 {
+  font-size: clamp(32px, 3.2vw, 44px);
+}
+.section-heading > p,
+.value-grid p,
+.focus-grid p,
+.agenda-list p,
+.announcement p,
+.archive-list p,
+.article-grid article p,
+.faq-grid details p,
+.legal-content p {
+  font-size: 16px;
+}
+.speaker-card > span,
+.speaker-card > strong,
+.speaker-bio p,
+.info-grid dt,
+.transport-grid span,
+.footer-grid p,
+.footer-links a {
+  font-size: 14px;
+}
+.info-grid dd {
+  font-size: 16px;
+}
+.transport-grid p {
+  font-size: 15px;
+  line-height: 1.75;
+}
+.form-intro p,
+.notice,
+.register-layout aside dt {
+  font-size: 14px;
+}
+.field label,
+.check-row,
+.consents label,
+.review-panel dt,
+.register-layout aside dd {
+  font-size: 15px;
+}
+.map-embed {
+  min-height: 430px;
+  position: relative;
+  overflow: hidden;
+  background: #e0e5de;
+}
+.map-embed iframe {
+  display: block;
+  width: 100%;
+  height: 430px;
+  border: 0;
+}
+.map-embed > div {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  gap: 2px;
+  padding: 12px 14px;
+  background: rgba(14, 44, 41, 0.92);
+  color: #fff;
+  pointer-events: none;
+}
+.map-embed > div strong {
+  font-size: 16px;
+}
+.map-embed > div span {
+  color: #cbd8d2;
+  font-size: 13px;
 }
 
 @media (max-width: 1100px) {
@@ -194,7 +299,7 @@ body .hero {
     padding-top: 0;
   }
   body .hero h1 {
-    font-size: 34px;
+    font-size: 32px;
     margin-top: 18px;
   }
   .countdown > div {
@@ -236,5 +341,35 @@ body .hero {
   }
   .history-block {
     margin-top: 45px;
+  }
+  .about-grid h2,
+  .dialogue-band h2,
+  .section-heading h2,
+  .attend-grid h2,
+  .register-cta h2,
+  .archive-intro h2,
+  .year-summary h2,
+  .faq-grid h2 {
+    font-size: 32px;
+  }
+  .page-hero h1 {
+    font-size: 40px;
+  }
+  .year-hero h1 {
+    font-size: 58px;
+  }
+  .prose,
+  .section-heading > p,
+  .value-grid p,
+  .focus-grid p,
+  .agenda-list p,
+  .transport-grid p,
+  .faq-grid details p {
+    font-size: 16px;
+  }
+  .map-embed,
+  .map-embed iframe {
+    min-height: 320px;
+    height: 320px;
   }
 }

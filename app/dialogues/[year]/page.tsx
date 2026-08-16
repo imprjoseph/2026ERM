@@ -1,2 +1,11 @@
 import { DialogueDetail } from "../../../components/EventDetailPages";
-export default async function Page({params}:{params:Promise<{year:string}>}){const{year}=await params;return <DialogueDetail year={year}/>}
+import { getCurrentEvent } from "../../../lib/db";
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ year: string }>;
+}) {
+  const [{ year }, event] = await Promise.all([params, getCurrentEvent()]);
+  return <DialogueDetail year={year} initialEvent={event} />;
+}

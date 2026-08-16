@@ -158,8 +158,12 @@ function downloadCalendar(title: string) {
   URL.revokeObjectURL(url);
 }
 
-export function DialoguesPage() {
-  const { event, error } = useEventData();
+export function DialoguesPage({
+  initialEvent = null,
+}: {
+  initialEvent?: import("../lib/types").EventData | null;
+}) {
+  const { event, error } = useEventData(initialEvent);
   if (!event)
     return (
       <PageShell>
@@ -213,8 +217,14 @@ export function DialoguesPage() {
   );
 }
 
-export function DialogueDetail({ year }: { year: string }) {
-  const { event, error } = useEventData();
+export function DialogueDetail({
+  year,
+  initialEvent = null,
+}: {
+  year: string;
+  initialEvent?: import("../lib/types").EventData | null;
+}) {
+  const { event, error } = useEventData(initialEvent);
   if (!event)
     return (
       <PageShell>

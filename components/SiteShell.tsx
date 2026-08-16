@@ -17,8 +17,8 @@ function getCountdown(now: number) {
   };
 }
 
-export function useEventData() {
-  const [event, setEvent] = useState<EventData | null>(null);
+export function useEventData(initialEvent: EventData | null = null) {
+  const [event, setEvent] = useState<EventData | null>(initialEvent);
   const [error, setError] = useState("");
   useEffect(() => {
     const controller = new AbortController();
