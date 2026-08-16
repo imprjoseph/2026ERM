@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import type { SpeakerData } from "../lib/types";
+import Link from "next/link";
 
 export default function SpeakerCard({
   speaker,
@@ -27,13 +28,13 @@ export default function SpeakerCard({
         <small className="speaker-name-en">{speaker.nameEn}</small>
       )}
       <span className="speaker-title">{speaker.title}</span>
-      <a
+      <Link
         className="speaker-detail-link"
         href={`/2026/speakers/${encodeURIComponent(speaker.id)}`}
         aria-label={`查看${speaker.nameZh}講者詳細資料`}
       >
         查看詳細 <span aria-hidden="true">→</span>
-      </a>
+      </Link>
     </article>
   );
 }

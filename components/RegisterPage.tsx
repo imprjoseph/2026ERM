@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { PageShell, LoadingState, useEventData } from "./SiteShell";
+import type { EventData } from "../lib/types";
 
 const categories = [
   "壽險業",
@@ -65,8 +66,12 @@ function Field({
   );
 }
 
-export default function RegisterPage() {
-  const { event, error: eventError } = useEventData();
+export default function RegisterPage({
+  initialEvent = null,
+}: {
+  initialEvent?: EventData | null;
+}) {
+  const { event, error: eventError } = useEventData(initialEvent);
   const [values, setValues] = useState<FormValues>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [step, setStep] = useState<1 | 2 | 3>(1);

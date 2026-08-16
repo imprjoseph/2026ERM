@@ -13,6 +13,7 @@ import {
 } from "./SiteShell";
 import QuickRegistrationForm from "./QuickRegistrationForm";
 import SpeakerCard from "./SpeakerCard";
+import type { EventData } from "../lib/types";
 
 const values = [
   [
@@ -40,8 +41,12 @@ const reasons = [
   "建立從風險管理走向價值創造的決策視角",
 ];
 
-export default function HomePage() {
-  const { event, error } = useEventData();
+export default function HomePage({
+  initialEvent = null,
+}: {
+  initialEvent?: EventData | null;
+}) {
+  const { event, error } = useEventData(initialEvent);
   const [period, setPeriod] = useState("全部");
   if (!event)
     return (
@@ -79,7 +84,7 @@ export default function HomePage() {
       address: event.locationAddress,
     },
     organizer: { "@type": "Organization", name: event.organizer },
-    url: typeof location !== "undefined" ? location.origin : "",
+    url: "https://insurance-risk-forum-2026.impr-joseph.chatgpt.site/",
   }).replace(/</g, "\\u003c");
   return (
     <>
@@ -338,17 +343,17 @@ export default function HomePage() {
               </p>
             </div>
             <div className="timeline">
-              <a href="/2026" className="year current">
+              <Link href="/2026" className="year current">
                 <strong>2026</strong>
                 <span>{event.themeZh}</span>
                 <i>現在</i>
-              </a>
+              </Link>
               {event.dialogues.map((d) => (
-                <a href={`/dialogues/${d.slug}`} key={d.id} className="year">
+                <Link href={`/dialogues/${d.slug}`} key={d.id} className="year">
                   <strong>{d.year}</strong>
                   <span>{d.name}</span>
                   <i>{d.isPublished ? "查看" : "整理中"}</i>
-                </a>
+                </Link>
               ))}
               <div className="year future">
                 <strong>→</strong>

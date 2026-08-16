@@ -1,11 +1,35 @@
 "use client";
-/* eslint-disable @next/next/no-html-link-for-pages */
 
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 import type { EventData } from "../lib/types";
 
 const registrationDeadline = new Date("2026-11-06T23:59:59+08:00").getTime();
+const publicEventCacheTtl = 60_000;
+let publicEventCache: { data: EventData; expiresAt: number } | null = null;
+let publicEventRequest: Promise<EventData> | null = null;
+
+function loadPublicEvent() {
+  if (publicEventCache && publicEventCache.expiresAt > Date.now()) {
+    return Promise.resolve(publicEventCache.data);
+  }
+  publicEventRequest ??= fetch("/api/public/event")
+    .then(async (response) => {
+      if (!response.ok) throw new Error("Public event request failed");
+      return response.json() as Promise<EventData>;
+    })
+    .then((data) => {
+      publicEventCache = {
+        data,
+        expiresAt: Date.now() + publicEventCacheTtl,
+      };
+      return data;
+    })
+    .finally(() => {
+      publicEventRequest = null;
+    });
+  return publicEventRequest;
+}
 
 function getCountdown(now: number) {
   const remaining = Math.max(0, registrationDeadline - now);
@@ -19,21 +43,23 @@ function getCountdown(now: number) {
 }
 
 export function useEventData(initialEvent: EventData | null = null) {
-  const [event, setEvent] = useState<EventData | null>(initialEvent);
+  const [event, setEvent] = useState<EventData | null>(
+    () => publicEventCache?.data ?? initialEvent,
+  );
   const [error, setError] = useState("");
   useEffect(() => {
-    const controller = new AbortController();
-    fetch("/api/public/event", { signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error();
-        return response.json() as Promise<EventData>;
+    let active = true;
+    loadPublicEvent()
+      .then((data) => {
+        if (active) setEvent(data);
       })
-      .then(setEvent)
-      .catch((reason) => {
-        if (reason?.name !== "AbortError")
+      .catch(() => {
+        if (active)
           setError("會議資料暫時無法載入，請稍後重新整理。");
       });
-    return () => controller.abort();
+    return () => {
+      active = false;
+    };
   }, []);
   return { event, error };
 }
@@ -53,12 +79,7 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="nav-wrap">
-        <a href="/" className="brand" aria-label="保險業風險管理趨勢論壇首頁">
-          <span>
-            <b>風險管理趨勢論壇</b>
-            <small>ERM · VALUE · DIALOGUE</small>
-          </span>
-        </a>
+        <span className="header-spacer" aria-hidden="true" />
         <button
           className="menu-button"
           onClick={() => setOpen(!open)}
@@ -73,17 +94,17 @@ export function Header() {
           aria-label="主要選單"
         >
           {navigation.map(([label, href]) => (
-            <a key={label} href={href} onClick={() => setOpen(false)}>
+            <Link key={label} href={href} onClick={() => setOpen(false)}>
               {label}
-            </a>
+            </Link>
           ))}
-          <a
+          <Link
             href="/register"
             className="nav-register"
             onClick={() => setOpen(false)}
           >
             立即報名
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

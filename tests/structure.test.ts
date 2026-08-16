@@ -92,13 +92,14 @@ test("2026 會議資訊與範本資料已設定", async () => {
   assert.match(source, /agenda-template-12/);
   assert.match(source, /speaker-template-03/);
 });
-test("公開導覽採可直接開啟的連結並移除圖形標誌", async () => {
+test("公開導覽採站內快速連結並移除左上品牌文字", async () => {
   const shell = await readFile(
     new URL("components/SiteShell.tsx", root),
     "utf8",
   );
   const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
-  assert.doesNotMatch(shell, /className="brand-mark"/);
-  assert.match(shell, /<a key=\{label\} href=\{href\}/);
-  assert.match(home, /<a href=\{`\/dialogues\/\$\{d\.slug\}`\}/);
+  assert.doesNotMatch(shell, /className="brand/);
+  assert.match(shell, /<Link key=\{label\} href=\{href\}/);
+  assert.match(home, /<Link href=\{`\/dialogues\/\$\{d\.slug\}`\}/);
+  assert.match(shell, /publicEventRequest \?\?=/);
 });

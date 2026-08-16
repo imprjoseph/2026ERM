@@ -50,7 +50,7 @@ body .hero {
 }
 .speaker-detail-section {
   display: grid;
-  grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.25fr);
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
   gap: 72px;
   align-items: start;
 }
@@ -60,6 +60,7 @@ body .hero {
   aspect-ratio: 4 / 5;
   place-items: center;
   background: #d7dfd7;
+  max-width: 300px;
 }
 .speaker-detail-photo img {
   width: 100%;
@@ -126,8 +127,9 @@ body .hero {
 }
 .history-gallery {
   display: grid;
-  grid-template-columns: 1.25fr 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 230px));
+  gap: 14px;
+  max-width: 718px;
 }
 .history-gallery figure {
   min-width: 0;
@@ -136,11 +138,11 @@ body .hero {
 }
 .history-gallery img {
   width: 100%;
-  height: 300px;
+  height: 160px;
   object-fit: cover;
 }
 .history-gallery figure:first-child img {
-  height: 360px;
+  height: 160px;
 }
 .history-gallery figcaption {
   padding: 12px 14px;
@@ -157,13 +159,14 @@ body .hero {
     gap: 36px;
   }
   .speaker-detail-photo {
-    max-width: 520px;
+    max-width: 280px;
   }
   .speaker-facts > div {
     grid-template-columns: 92px 1fr;
   }
   .history-gallery {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 520px;
   }
   .history-gallery img,
   .history-gallery figure:first-child img {

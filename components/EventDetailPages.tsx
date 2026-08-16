@@ -52,7 +52,7 @@ export function SpeakersPage({
         )}
         <div className="back-cta">
           <p>先掌握本年度論壇的關鍵議題與會議安排。</p>
-          <a href="/2026/agenda">查看會議議程 →</a>
+          <Link href="/2026/agenda">查看會議議程 →</Link>
         </div>
       </section>
     </PageShell>
@@ -155,8 +155,12 @@ export function SpeakerDetail({
   );
 }
 
-export function AgendaPage() {
-  const { event, error } = useEventData();
+export function AgendaPage({
+  initialEvent = null,
+}: {
+  initialEvent?: EventData | null;
+}) {
+  const { event, error } = useEventData(initialEvent);
   if (!event)
     return (
       <PageShell>
@@ -274,7 +278,7 @@ export function DialoguesPage({
           </p>
         </div>
         <div className="archive-list">
-          <a href="/2026">
+          <Link href="/2026">
             <strong>2026</strong>
             <div>
               <span>目前年度</span>
@@ -282,9 +286,9 @@ export function DialoguesPage({
               <p>{event.themeZh}</p>
             </div>
             <i>→</i>
-          </a>
+          </Link>
           {event.dialogues.map((d) => (
-            <a href={`/dialogues/${d.slug}`} key={d.id}>
+            <Link href={`/dialogues/${d.slug}`} key={d.id}>
               <strong>{d.year}</strong>
               <div>
                 <span>{d.isPublished ? "年度回顧" : "資料整理中"}</span>
@@ -292,7 +296,7 @@ export function DialoguesPage({
                 <p>{d.theme}</p>
               </div>
               <i>→</i>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
