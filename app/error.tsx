@@ -1,0 +1,1 @@
+"use client";export default function ErrorPage({reset}:{reset:()=>void}){return <main className="error-page"><span>!</span><h1>暫時無法載入頁面</h1><p>請稍後再試；系統不會在錯誤訊息中顯示敏感資訊。</p><button onClick={reset}>重新載入</button></main>}
