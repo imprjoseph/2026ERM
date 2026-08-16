@@ -1,8 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { PageShell, LoadingState, useEventData } from "./SiteShell";
+import {
+  PageShell,
+  LoadingState,
+  ReliableLink as Link,
+  useEventData,
+} from "./SiteShell";
 import type { EventData } from "../lib/types";
 
 const categories = [

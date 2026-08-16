@@ -1,13 +1,13 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 
-import Link from "next/link";
 import { useState } from "react";
 import {
   FloatingRegistration,
   Header,
   Footer,
   LoadingState,
+  ReliableLink as Link,
   RegistrationCountdown,
   useEventData,
 } from "./SiteShell";
@@ -194,7 +194,7 @@ export default function HomePage({
           </div>
         </section>
 
-        <section className="section" id="focus">
+        <section className="section focus-section" id="focus">
           <div className="section-heading">
             <div>
               <div className="section-label">

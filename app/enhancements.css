@@ -4,6 +4,92 @@ body .hero {
   padding-right: max(4vw, 28px);
 }
 
+/* Compact priority sections and reliable navigation feedback */
+.dialogue-band .section {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+.dialogue-band .section h2 {
+  margin: 10px 0 4px;
+  font-size: clamp(30px, 3vw, 42px);
+}
+.dialogue-band .value-grid {
+  margin-top: 24px;
+}
+.dialogue-band .value-grid article {
+  min-height: 150px;
+  padding-top: 18px;
+}
+.dialogue-band .value-grid h3 {
+  margin: 12px 0 4px;
+  font-size: 21px;
+}
+.dialogue-band .value-grid strong {
+  margin-bottom: 8px;
+}
+.focus-section {
+  padding-top: 52px;
+  padding-bottom: 56px;
+}
+.focus-section .section-heading {
+  margin-bottom: 22px;
+}
+.focus-section .section-heading h2 {
+  margin-top: 12px;
+  font-size: clamp(30px, 3vw, 42px);
+}
+.focus-section .focus-grid article {
+  min-height: 175px;
+  padding-top: 18px;
+  padding-bottom: 20px;
+}
+.focus-section .focus-line {
+  margin: 16px 0 12px;
+}
+.focus-section .focus-grid h3 {
+  margin-bottom: 7px;
+  font-size: 19px;
+}
+.nav-register,
+.hero-actions .button.primary,
+.floating-registration > a {
+  box-shadow: 0 8px 24px rgba(115, 84, 28, 0.2);
+}
+html.navigation-pending {
+  cursor: progress;
+}
+html.navigation-pending .site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), #f2d99e, var(--gold));
+}
+
+@media (max-width: 760px) {
+  .dialogue-band .section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .dialogue-band .value-grid {
+    margin-top: 26px;
+  }
+  .dialogue-band .value-grid article,
+  .dialogue-band .value-grid article + article {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .focus-section {
+    padding-top: 44px;
+    padding-bottom: 48px;
+  }
+  .focus-section .section-heading {
+    margin-bottom: 22px;
+  }
+}
+
 .speaker-card {
   display: flex;
   min-width: 0;

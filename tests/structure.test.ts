@@ -99,7 +99,8 @@ test("公開導覽採站內快速連結並移除左上品牌文字", async () =>
   );
   const home = await readFile(new URL("components/HomePage.tsx", root), "utf8");
   assert.doesNotMatch(shell, /className="brand/);
-  assert.match(shell, /<Link key=\{label\} href=\{href\}/);
+  assert.match(shell, /<ReliableLink/);
   assert.match(home, /<Link href=\{`\/dialogues\/\$\{d\.slug\}`\}/);
   assert.match(shell, /publicEventRequest \?\?=/);
+  assert.match(shell, /window\.location\.assign\(destination\.href\)/);
 });

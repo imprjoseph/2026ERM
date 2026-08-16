@@ -1,8 +1,12 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 
-import Link from "next/link";
-import { PageShell, LoadingState, useEventData } from "./SiteShell";
+import {
+  PageShell,
+  LoadingState,
+  ReliableLink as Link,
+  useEventData,
+} from "./SiteShell";
 import SpeakerCard from "./SpeakerCard";
 import type { EventData } from "../lib/types";
 

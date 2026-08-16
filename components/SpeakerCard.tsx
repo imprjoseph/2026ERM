@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import type { SpeakerData } from "../lib/types";
-import Link from "next/link";
+import { ReliableLink as Link } from "./SiteShell";
 
 export default function SpeakerCard({
   speaker,

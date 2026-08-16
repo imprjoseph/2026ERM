@@ -1,13 +1,58 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  type ComponentProps,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import type { EventData } from "../lib/types";
 
 const registrationDeadline = new Date("2026-11-06T23:59:59+08:00").getTime();
 const publicEventCacheTtl = 60_000;
 let publicEventCache: { data: EventData; expiresAt: number } | null = null;
 let publicEventRequest: Promise<EventData> | null = null;
+let navigationFallbackTimer: number | undefined;
+
+type ReliableLinkProps = Omit<ComponentProps<typeof Link>, "href"> & {
+  href: string;
+};
+
+export function ReliableLink({
+  href,
+  onClick,
+  target,
+  ...props
+}: ReliableLinkProps) {
+  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    onClick?.(event);
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      target === "_blank"
+    )
+      return;
+
+    const destination = new URL(href, window.location.href);
+    if (destination.href === window.location.href) return;
+    document.documentElement.classList.add("navigation-pending");
+    window.clearTimeout(navigationFallbackTimer);
+    navigationFallbackTimer = window.setTimeout(() => {
+      document.documentElement.classList.remove("navigation-pending");
+      if (window.location.href !== destination.href) {
+        window.location.assign(destination.href);
+      }
+    }, 700);
+  }
+
+  return <Link {...props} href={href} target={target} onClick={handleClick} />;
+}
 
 function loadPublicEvent() {
   if (publicEventCache && publicEventCache.expiresAt > Date.now()) {
@@ -54,8 +99,7 @@ export function useEventData(initialEvent: EventData | null = null) {
         if (active) setEvent(data);
       })
       .catch(() => {
-        if (active)
-          setError("會議資料暫時無法載入，請稍後重新整理。");
+        if (active) setError("會議資料暫時無法載入，請稍後重新整理。");
       });
     return () => {
       active = false;
@@ -94,17 +138,21 @@ export function Header() {
           aria-label="主要選單"
         >
           {navigation.map(([label, href]) => (
-            <Link key={label} href={href} onClick={() => setOpen(false)}>
+            <ReliableLink
+              key={label}
+              href={href}
+              onClick={() => setOpen(false)}
+            >
               {label}
-            </Link>
+            </ReliableLink>
           ))}
-          <Link
+          <ReliableLink
             href="/register"
             className="nav-register"
             onClick={() => setOpen(false)}
           >
             立即報名
-          </Link>
+          </ReliableLink>
         </nav>
       </div>
     </header>
@@ -160,10 +208,10 @@ export function Footer({
             信箱｜<a href={`mailto:${contactEmail}`}>{contactEmail}</a>
           </p>
           <div className="footer-links">
-            <Link href="/privacy">隱私權政策</Link>
-            <Link href="/personal-data">個資告知</Link>
-            <Link href="/terms">使用條款</Link>
-            <Link href="/admin">管理後台</Link>
+            <ReliableLink href="/privacy">隱私權政策</ReliableLink>
+            <ReliableLink href="/personal-data">個資告知</ReliableLink>
+            <ReliableLink href="/terms">使用條款</ReliableLink>
+            <ReliableLink href="/admin">管理後台</ReliableLink>
           </div>
         </div>
       </div>
@@ -235,11 +283,11 @@ export function FloatingRegistration() {
   return (
     <aside className="floating-registration" aria-label="常駐報名入口">
       <RegistrationCountdown compact />
-      <Link href="/register">
+      <ReliableLink href="/register">
         <span>2026 FORUM</span>
         <b>立即報名</b>
         <i aria-hidden="true">→</i>
-      </Link>
+      </ReliableLink>
     </aside>
   );
 }
