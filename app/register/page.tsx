@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import RegisterPage from "../../components/RegisterPage";
-import { getCurrentEvent } from "../../lib/db";
+import { getPublishedEvent } from "../../lib/publishedEvent";
 
 export const metadata: Metadata = {
   title: "報名申請｜2026 保險業風險管理趨勢論壇",
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <RegisterPage initialEvent={await getCurrentEvent()} />;
+  return <RegisterPage initialEvent={await getPublishedEvent()} />;
 }

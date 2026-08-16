@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
-import { getCurrentEvent } from "../../../../lib/db";
-import { applyGoogleSheetEventOverrides } from "../../../../lib/googleSheets";
+import { getPublishedEvent } from "../../../../lib/publishedEvent";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const event = await applyGoogleSheetEventOverrides(await getCurrentEvent());
+    const event = await getPublishedEvent();
     return NextResponse.json(event, {
       headers: {
-        "Cache-Control": "public, max-age=60, stale-while-revalidate=300",
+        "Cache-Control":
+          "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800",
       },
     });
   } catch {

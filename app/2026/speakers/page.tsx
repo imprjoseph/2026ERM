@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SpeakersPage } from "../../../components/EventDetailPages";
-import { getCurrentEvent } from "../../../lib/db";
+import { getPublishedEvent } from "../../../lib/publishedEvent";
 
 export const metadata: Metadata = {
   title: "講者陣容｜2026 保險業風險管理趨勢論壇",
@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const event = await getCurrentEvent();
+  const event = await getPublishedEvent();
   return <SpeakersPage initialEvent={event} />;
 }

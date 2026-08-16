@@ -11,7 +11,7 @@ import {
 import type { EventData } from "../lib/types";
 
 const registrationDeadline = new Date("2026-11-06T23:59:59+08:00").getTime();
-const publicEventCacheTtl = 60_000;
+const publicEventCacheTtl = 86_400_000;
 let publicEventCache: { data: EventData; expiresAt: number } | null = null;
 let publicEventRequest: Promise<EventData> | null = null;
 let navigationFallbackTimer: number | undefined;
@@ -93,6 +93,13 @@ export function useEventData(initialEvent: EventData | null = null) {
   );
   const [error, setError] = useState("");
   useEffect(() => {
+    if (initialEvent) {
+      publicEventCache = {
+        data: initialEvent,
+        expiresAt: Date.now() + publicEventCacheTtl,
+      };
+      return;
+    }
     let active = true;
     loadPublicEvent()
       .then((data) => {
@@ -104,7 +111,7 @@ export function useEventData(initialEvent: EventData | null = null) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialEvent]);
   return { event, error };
 }
 
@@ -164,20 +171,11 @@ export function Footer({
 }: {
   organizer?: string;
 }) {
-  const { event } = useEventData();
-  const guidingOrganization =
-    event?.guidingOrganization || "金融監督管理委員會";
-  const planningOrganization =
-    event?.planningOrganization || "金融監督管理委員會保險局";
-  const displayedOrganizer = event?.organizer || organizer;
-  const coOrganizers = (
-    event?.coOrganizers || "財團法人保險事業發展中心；中華民國精算學會"
-  )
-    .split(/[；;\n]/)
-    .map((name) => name.trim())
-    .filter(Boolean);
-  const contactPhone = event?.contactPhone || "02-27635666#106";
-  const contactEmail = event?.contactEmail || "penny@impr.com.tw";
+  const guidingOrganization = "金融監督管理委員會";
+  const planningOrganization = "金融監督管理委員會保險局";
+  const coOrganizers = ["財團法人保險事業發展中心", "中華民國精算學會"];
+  const contactPhone = "02-27635666#106";
+  const contactEmail = "penny@impr.com.tw";
 
   return (
     <footer className="site-footer">
@@ -194,7 +192,7 @@ export function Footer({
           <h3>主辦資訊</h3>
           <p>指導單位｜{guidingOrganization}</p>
           <p>策畫單位｜{planningOrganization}</p>
-          <p>主辦單位｜{displayedOrganizer}</p>
+          <p>主辦單位｜{organizer}</p>
           {coOrganizers.map((name) => (
             <p key={name}>協辦單位｜{name}</p>
           ))}

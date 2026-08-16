@@ -151,3 +151,21 @@ test("公開導覽採站內快速連結並移除左上品牌文字", async () =>
   assert.match(shell, /publicEventRequest \?\?=/);
   assert.match(shell, /window\.location\.assign\(destination\.href\)/);
 });
+
+test("公開頁使用發佈快取，不在訪客請求時讀取 Google Sheet", async () => {
+  const route = await readFile(
+    new URL("app/api/public/event/route.ts", root),
+    "utf8",
+  );
+  const cache = await readFile(new URL("lib/publishedEvent.ts", root), "utf8");
+  const shell = await readFile(
+    new URL("components/SiteShell.tsx", root),
+    "utf8",
+  );
+  assert.match(route, /getPublishedEvent/);
+  assert.doesNotMatch(route, /applyGoogleSheetEventOverrides/);
+  assert.match(route, /s-maxage=86400/);
+  assert.match(cache, /publishedEventSnapshot \?\?= getCurrentEvent/);
+  assert.match(shell, /const publicEventCacheTtl = 86_400_000/);
+  assert.match(shell, /if \(initialEvent\)/);
+});

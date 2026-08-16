@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { DialoguesPage } from "../../components/EventDetailPages";
-import { getCurrentEvent } from "../../lib/db";
+import { getPublishedEvent } from "../../lib/publishedEvent";
 
 export const metadata: Metadata = {
   title: "歷年對話｜保險業風險管理趨勢論壇",
@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const event = await getCurrentEvent();
+  const event = await getPublishedEvent();
   return <DialoguesPage initialEvent={event} />;
 }

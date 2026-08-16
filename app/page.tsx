@@ -1,6 +1,6 @@
 import HomePage from "../components/HomePage";
-import { getCurrentEvent } from "../lib/db";
+import { getPublishedEvent } from "../lib/publishedEvent";
 
 export default async function Page() {
-  return <HomePage initialEvent={await getCurrentEvent()} />;
+  return <HomePage initialEvent={await getPublishedEvent()} />;
 }
