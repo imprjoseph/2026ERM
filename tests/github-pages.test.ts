@@ -1,0 +1,65 @@
+import assert from "node:assert/strict";
+import { access, readFile } from "node:fs/promises";
+import path from "node:path";
+import test from "node:test";
+
+const root = new URL("../", import.meta.url);
+
+test("GitHub Pages 首頁、議程、歷年與報名頁已產生", async () => {
+  for (const target of [
+    "docs/index.html",
+    "docs/2026/agenda/index.html",
+    "docs/2026/speakers/index.html",
+    "docs/dialogues/index.html",
+    "docs/dialogues/2025/index.html",
+    "docs/register/index.html",
+    "docs/github-pages.js",
+    "docs/config.js",
+    "docs/.nojekyll",
+  ]) {
+    await access(new URL(target, root));
+  }
+});
+
+test("GitHub Pages 使用子目錄連結並移除原站執行碼", async () => {
+  const html = await readFile(new URL("docs/index.html", root), "utf8");
+  assert.match(html, /href="\/2026ERM\/dialogues"/);
+  assert.match(html, /src="\/2026ERM\/hero-2026\.jpg"/);
+  assert.match(html, /src="\/2026ERM\/github-pages\.js"/);
+  assert.doesNotMatch(html, /\/_next\//);
+  assert.doesNotMatch(html, /vinext\.navigationRuntime/);
+  assert.doesNotMatch(html, /insurance-risk-forum-2026\.impr-joseph/);
+});
+
+test("Google Sheet API 與報名寫入已串接", async () => {
+  const config = await readFile(new URL("docs/config.js", root), "utf8");
+  const runtime = await readFile(new URL("docs/github-pages.js", root), "utf8");
+  assert.match(config, /script\.google\.com\/macros\/s\/AKfycbw-/);
+  assert.match(runtime, /action: "appendRegistration"/);
+  assert.match(runtime, /url\.searchParams\.set\("action", "readEvent"\)/);
+  assert.match(runtime, /duplicate_registration/);
+});
+
+test("GitHub Pages 站內絕對連結皆有對應檔案", async () => {
+  const htmlFiles = [
+    "docs/index.html",
+    "docs/2026/agenda/index.html",
+    "docs/2026/speakers/index.html",
+    "docs/dialogues/index.html",
+    "docs/register/index.html",
+  ];
+  const links = new Set<string>();
+  for (const file of htmlFiles) {
+    const html = await readFile(new URL(file, root), "utf8");
+    for (const match of html.matchAll(/href="(\/2026ERM\/[^"#?]*)/g)) {
+      links.add(match[1]);
+    }
+  }
+  for (const link of links) {
+    const relative = link.replace(/^\/2026ERM\/?/, "");
+    if (!relative || /\.[a-z0-9]+$/i.test(relative)) continue;
+    await access(
+      path.join(new URL("docs/", root).pathname, relative, "index.html"),
+    );
+  }
+});

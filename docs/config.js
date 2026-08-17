@@ -1,0 +1,1 @@
+window.ERM_CONFIG = {"basePath":"/2026ERM","sheetApiUrl":"https://script.google.com/macros/s/AKfycbw-kdSD2axQgT1ZwhfupOlHRIyHI4fGeIVPfftaer58YFR_bes4r3LkU9zmOdZjAxkU/exec","sheetAdminUrl":"https://docs.google.com/spreadsheets/d/1PoJOTdzcYF6vx-TeB2p4Y3-M8W6YX2NxctwY4dAjxfU/edit"};

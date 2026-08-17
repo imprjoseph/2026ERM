@@ -114,6 +114,23 @@ npm run build
 
 Sites 會建置 Cloudflare Worker 相容輸出、建立 D1、套用 migration 並發布。若改部署至 Vercel／一般 Node.js，需將 D1 adapter 替換為 PostgreSQL adapter、設定連線池，並保留相同的伺服器驗證、權限與稽核規則。
 
+### GitHub Pages＋Google Sheet 正式版本
+
+GitHub Pages 網址為 `https://imprjoseph.github.io/2026ERM/`，發布來源為 `main` 分支的 `/docs`。公開頁面位於 `docs/`，使用 `github-pages/github-pages.js` 讀取 Google Apps Script Web App：
+
+- 公開內容：從「活動設定、2026議程、2026講者、FAQ、歷年論壇」讀取。
+- 報名申請：由 Apps Script 驗證後寫入「報名名單」。
+- 管理後台：直接開啟受權限保護的 Google Sheet，不在公開網站提供名單讀取接口。
+- 靜態備援：Google Sheet 暫時無法連線時仍顯示最近一次發布的內容。
+
+更新靜態發布檔案：
+
+```bash
+npm run build:github-pages
+```
+
+Apps Script 原始碼位於 `integrations/google-apps-script/Code.gs`。修改後須在 Google Apps Script 建立新版本並更新 Web App 部署，網站才會使用新版後台邏輯。請勿將整份含報名名單的試算表設為公開。
+
 ## 已完成
 
 - 響應式品牌首頁及所有主要公開頁面
