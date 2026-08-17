@@ -1,15 +1,22 @@
 const REGISTRATION_SHEET = "報名名單";
+const MIN_FORM_FILL_MS = 2500;
+const MAX_TEXT_LENGTH = 500;
+
+function doGet(e) {
+  try {
+    const action = String((e && e.parameter && e.parameter.action) || "readEvent");
+    if (action === "readEvent") return readEvent();
+    return jsonResponse({ ok: false, error: "unknown_action" });
+  } catch (error) {
+    console.error(error);
+    return jsonResponse({ ok: false, error: "invalid_request" });
+  }
+}
 
 function doPost(e) {
   try {
     const body = JSON.parse((e.postData && e.postData.contents) || "{}");
-    const expected =
-      PropertiesService.getScriptProperties().getProperty("WEBHOOK_TOKEN");
-    if (!expected || body.token !== expected) {
-      return jsonResponse({ ok: false, error: "unauthorized" });
-    }
     if (body.action === "appendRegistration") return appendRegistration(body);
-    if (body.action === "readEvent") return readEvent();
     return jsonResponse({ ok: false, error: "unknown_action" });
   } catch (error) {
     console.error(error);
@@ -18,41 +25,131 @@ function doPost(e) {
 }
 
 function appendRegistration(body) {
+  const validationError = validateRegistration(body);
+  if (validationError) {
+    return jsonResponse({ ok: false, error: validationError });
+  }
+
+  const email = cleanText(body.email, 160).toLowerCase();
+  const cache = CacheService.getScriptCache();
+  const throttleKey = "registration:" + digest(email);
+  if (cache.get(throttleKey)) {
+    return jsonResponse({ ok: false, error: "too_many_requests" });
+  }
+  cache.put(throttleKey, "1", 60);
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    return appendRegistrationLocked(body, email);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function appendRegistrationLocked(body, email) {
   const sheet =
     SpreadsheetApp.getActiveSpreadsheet().getSheetByName(REGISTRATION_SHEET);
   if (!sheet) throw new Error("Registration sheet not found");
-  const existing = sheet
-    .getRange(7, 1, Math.max(sheet.getLastRow() - 6, 1), 1)
+  const rowCount = Math.max(sheet.getLastRow() - 6, 1);
+  const existingApplications = sheet
+    .getRange(7, 1, rowCount, 1)
     .getDisplayValues()
     .flat();
-  if (existing.includes(body.applicationNo)) {
-    return jsonResponse({ ok: true, duplicate: true });
+  const existingEmails = sheet
+    .getRange(7, 10, rowCount, 1)
+    .getDisplayValues()
+    .flat()
+    .map(function (value) {
+      return String(value || "").trim().toLowerCase();
+    });
+  if (existingEmails.includes(email)) {
+    return jsonResponse({ ok: false, error: "duplicate_registration" });
   }
-  if (existing[0] === "範例－請刪除") sheet.deleteRow(7);
-  const now = body.submittedAt ? new Date(body.submittedAt) : new Date();
+  if (existingApplications[0] === "範例－請刪除") sheet.deleteRow(7);
+  const now = new Date();
+  const applicationNo = createApplicationNo(now);
   sheet.appendRow([
-    body.applicationNo,
+    applicationNo,
     now,
-    body.nameZh || "",
-    body.nameEn || "",
-    body.organization || "",
-    body.department || "",
-    body.jobTitle || "",
-    body.category || "",
-    body.mobile || "",
-    body.email || "",
+    cleanText(body.nameZh, 80),
+    cleanText(body.nameEn, 120),
+    cleanText(body.organization, 160),
+    cleanText(body.department, 120),
+    cleanText(body.jobTitle, 120),
+    cleanText(body.category, 80),
+    cleanText(body.mobile, 40),
+    email,
     body.needsEnglishBadge ? "是" : "否",
-    body.dietary || "",
-    body.dietaryNotes || "",
-    body.accessibilityNeeds || "",
-    body.notes || "",
+    cleanText(body.dietary, 80),
+    cleanText(body.dietaryNotes, 300),
+    cleanText(body.accessibilityNeeds, 300),
+    cleanText(body.notes, MAX_TEXT_LENGTH),
     body.acceptsUpdates ? "是" : "否",
     "待審核",
     "",
     "",
     now,
   ]);
-  return jsonResponse({ ok: true });
+  return jsonResponse({
+    ok: true,
+    result: {
+      id: applicationNo,
+      applicationNo: applicationNo,
+      status: "pending_review",
+    },
+  });
+}
+
+function validateRegistration(body) {
+  if (cleanText(body.companyWebsite, 200)) return "spam_detected";
+  const startedAt = Number(body.formStartedAt || 0);
+  if (!startedAt || Date.now() - startedAt < MIN_FORM_FILL_MS) {
+    return "submitted_too_quickly";
+  }
+  if (!body.privacyConsent) return "privacy_consent_required";
+  const required = [
+    "nameZh",
+    "organization",
+    "jobTitle",
+    "category",
+    "mobile",
+    "email",
+  ];
+  for (let index = 0; index < required.length; index += 1) {
+    if (!cleanText(body[required[index]], 200)) return "missing_required_field";
+  }
+  const email = cleanText(body.email, 160);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "invalid_email";
+  const mobile = cleanText(body.mobile, 40).replace(/[\s()-]/g, "");
+  if (!/^[+\d][\d-]{7,19}$/.test(mobile)) return "invalid_mobile";
+  return "";
+}
+
+function cleanText(value, limit) {
+  return String(value == null ? "" : value)
+    .replace(/[<>]/g, "")
+    .trim()
+    .slice(0, limit || MAX_TEXT_LENGTH);
+}
+
+function digest(value) {
+  const bytes = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    value,
+    Utilities.Charset.UTF_8,
+  );
+  return bytes
+    .map(function (byte) {
+      return ("0" + ((byte + 256) % 256).toString(16)).slice(-2);
+    })
+    .join("");
+}
+
+function createApplicationNo(now) {
+  const stamp = Utilities.formatDate(now, "Asia/Taipei", "yyyyMMddHHmmss");
+  const suffix = Math.floor(Math.random() * 9000 + 1000);
+  return "ERM-" + stamp + "-" + suffix;
 }
 
 function readEvent() {
