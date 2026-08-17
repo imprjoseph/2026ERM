@@ -308,9 +308,11 @@ export function DialoguesPage({
             <Link href={`/dialogues/${d.slug}`} key={d.id}>
               <strong>{d.year}</strong>
               <div>
-                <span>{d.isPublished ? "年度回顧" : "資料整理中"}</span>
-                <h2>{d.name}</h2>
-                <p>{d.theme}</p>
+                <span>{d.isPublished ? "歷年對話" : "資料整理中"}</span>
+                <h2>{d.theme}</h2>
+                <p>
+                  {d.dateLabel}｜{d.location}
+                </p>
               </div>
               <i>→</i>
             </Link>

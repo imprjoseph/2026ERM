@@ -139,7 +139,7 @@ test("2026 會議資訊與範本資料已設定", async () => {
   assert.match(source, /agenda-template-12/);
   assert.match(source, /speaker-template-03/);
 });
-test("公開導覽採站內快速連結並移除左上品牌文字", async () => {
+test("公開導覽採可靠原生連結並移除左上品牌文字", async () => {
   const shell = await readFile(
     new URL("components/SiteShell.tsx", root),
     "utf8",
@@ -149,7 +149,24 @@ test("公開導覽採站內快速連結並移除左上品牌文字", async () =>
   assert.match(shell, /<ReliableLink/);
   assert.match(home, /<Link href=\{`\/dialogues\/\$\{d\.slug\}`\}/);
   assert.match(shell, /publicEventRequest \?\?=/);
-  assert.match(shell, /window\.location\.assign\(destination\.href\)/);
+  assert.match(shell, /<a \{\.\.\.props\} href=\{href\}/);
+});
+
+test("頁首歷年對話使用可靠連結，歷年卡片不顯示論壇名稱", async () => {
+  const shell = await readFile(
+    new URL("components/SiteShell.tsx", root),
+    "utf8",
+  );
+  const detail = await readFile(
+    new URL("components/EventDetailPages.tsx", root),
+    "utf8",
+  );
+  assert.match(shell, /\["歷年對話", "\/dialogues"\]/);
+  assert.match(shell, /<a \{\.\.\.props\} href=\{href\}/);
+  assert.doesNotMatch(shell, /from "next\/link"/);
+  assert.match(detail, /<span>\{d\.isPublished \? "歷年對話"/);
+  assert.match(detail, /<h2>\{d\.theme\}<\/h2>/);
+  assert.doesNotMatch(detail, /<h2>\{d\.name\}<\/h2>/);
 });
 
 test("公開頁使用發佈快取，不在訪客請求時讀取 Google Sheet", async () => {

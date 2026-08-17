@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import {
   useEffect,
   useState,
-  type ComponentProps,
-  type MouseEvent,
+  type AnchorHTMLAttributes,
   type ReactNode,
 } from "react";
 import type { EventData } from "../lib/types";
@@ -14,9 +12,11 @@ const registrationDeadline = new Date("2026-11-06T23:59:59+08:00").getTime();
 const publicEventCacheTtl = 86_400_000;
 let publicEventCache: { data: EventData; expiresAt: number } | null = null;
 let publicEventRequest: Promise<EventData> | null = null;
-let navigationFallbackTimer: number | undefined;
 
-type ReliableLinkProps = Omit<ComponentProps<typeof Link>, "href"> & {
+type ReliableLinkProps = Omit<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  "href"
+> & {
   href: string;
 };
 
@@ -24,34 +24,14 @@ export function ReliableLink({
   href,
   onClick,
   target,
+  children,
   ...props
 }: ReliableLinkProps) {
-  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-    onClick?.(event);
-    if (
-      event.defaultPrevented ||
-      event.button !== 0 ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey ||
-      target === "_blank"
-    )
-      return;
-
-    const destination = new URL(href, window.location.href);
-    if (destination.href === window.location.href) return;
-    document.documentElement.classList.add("navigation-pending");
-    window.clearTimeout(navigationFallbackTimer);
-    navigationFallbackTimer = window.setTimeout(() => {
-      document.documentElement.classList.remove("navigation-pending");
-      if (window.location.href !== destination.href) {
-        window.location.assign(destination.href);
-      }
-    }, 700);
-  }
-
-  return <Link {...props} href={href} target={target} onClick={handleClick} />;
+  return (
+    <a {...props} href={href} target={target} onClick={onClick}>
+      {children}
+    </a>
+  );
 }
 
 function loadPublicEvent() {
