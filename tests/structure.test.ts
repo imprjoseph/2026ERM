@@ -165,7 +165,8 @@ test("公開頁使用發佈快取，不在訪客請求時讀取 Google Sheet", a
   assert.match(route, /getPublishedEvent/);
   assert.doesNotMatch(route, /applyGoogleSheetEventOverrides/);
   assert.match(route, /s-maxage=86400/);
-  assert.match(cache, /publishedEventSnapshot \?\?= getCurrentEvent/);
+  assert.match(cache, /publishedEventSnapshot \?\?= ensureDatabase\(\)/);
+  assert.match(cache, /\.then\(\(\) => getCurrentEvent\(\)\)/);
   assert.match(shell, /const publicEventCacheTtl = 86_400_000/);
   assert.match(shell, /if \(initialEvent\)/);
 });

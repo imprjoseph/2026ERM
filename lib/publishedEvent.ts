@@ -1,4 +1,4 @@
-import { getCurrentEvent } from "./db";
+import { ensureDatabase, getCurrentEvent } from "./db";
 import type { EventData } from "./types";
 
 let publishedEventSnapshot: Promise<EventData> | null = null;
@@ -8,9 +8,11 @@ let publishedEventSnapshot: Promise<EventData> | null = null;
  * A new deployment starts a fresh instance and loads the newly approved data.
  */
 export function getPublishedEvent(): Promise<EventData> {
-  publishedEventSnapshot ??= getCurrentEvent().catch((error) => {
-    publishedEventSnapshot = null;
-    throw error;
-  });
+  publishedEventSnapshot ??= ensureDatabase()
+    .then(() => getCurrentEvent())
+    .catch((error) => {
+      publishedEventSnapshot = null;
+      throw error;
+    });
   return publishedEventSnapshot;
 }
