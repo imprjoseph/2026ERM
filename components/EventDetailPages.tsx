@@ -299,8 +299,10 @@ export function DialoguesPage({
             <strong>2026</strong>
             <div>
               <span>目前年度</span>
-              <h2>{event.nameZh}</h2>
-              <p>{event.themeZh}</p>
+              <h2>{event.themeZh}</h2>
+              <p>
+                {event.dateLabel}｜{event.locationName}
+              </p>
             </div>
             <i>→</i>
           </Link>

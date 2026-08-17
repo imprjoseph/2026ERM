@@ -165,6 +165,8 @@ test("頁首歷年對話使用可靠連結，歷年卡片不顯示論壇名稱",
   assert.match(shell, /<a \{\.\.\.props\} href=\{href\}/);
   assert.doesNotMatch(shell, /from "next\/link"/);
   assert.match(detail, /<span>\{d\.isPublished \? "歷年對話"/);
+  assert.match(detail, /<h2>\{event\.themeZh\}<\/h2>/);
+  assert.doesNotMatch(detail, /<h2>\{event\.nameZh\}<\/h2>/);
   assert.match(detail, /<h2>\{d\.theme\}<\/h2>/);
   assert.doesNotMatch(detail, /<h2>\{d\.name\}<\/h2>/);
 });
