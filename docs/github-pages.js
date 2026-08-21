@@ -59,7 +59,7 @@
 
   async function getEventData() {
     if (!sheetApiUrl) return null;
-    const cacheKey = "erm-public-event-v1";
+    const cacheKey = "erm-public-event-v2";
     try {
       const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
       if (cached && Date.now() - cached.savedAt < 3600000) return cached.event;
@@ -111,13 +111,26 @@
   function renderSpeakers(event) {
     const grid = document.querySelector(".speaker-grid.detailed");
     if (!grid || !Array.isArray(event.speakers)) return;
+    const speakerSlugs = {
+      彭金隆: "peng-jin-long",
+      王麗惠: "wang-li-hui",
+      石百達: "shi-bai-da",
+      陳昌正: "chen-chang-cheng",
+    };
     grid.innerHTML = event.speakers
       .filter(function (speaker) {
         return speaker.isVisible;
       })
+      .sort(function (a, b) {
+        return Number(a.sortOrder || 0) - Number(b.sortOrder || 0);
+      })
       .map(function (speaker) {
-        const detailUrl = `${basePath}/2026/speakers/${encodeURIComponent(speaker.id)}/`;
-        return `<article class="speaker-card"><div class="speaker-photo placeholder"><span>${escapeHtml((speaker.nameZh || "講").slice(0, 1))}</span></div><div class="speaker-card-body"><p class="speaker-organization">${escapeHtml(speaker.organization)}</p><h2>${escapeHtml(speaker.nameZh)}</h2><p>${escapeHtml(speaker.title)}</p><a href="${detailUrl}">查看詳細 →</a></div></article>`;
+        const slug = speakerSlugs[speaker.nameZh] || speaker.id;
+        const detailUrl = `${basePath}/2026/speakers/${encodeURIComponent(slug)}/`;
+        const photo = speaker.photoUrl
+          ? `<img src="${escapeHtml(speaker.photoUrl)}" alt="${escapeHtml(speaker.nameZh)}講者照片">`
+          : `<span>${escapeHtml((speaker.nameZh || "講").slice(0, 1))}</span>`;
+        return `<article class="speaker-card"><div class="speaker-photo">${photo}</div><p class="speaker-type">${escapeHtml(speaker.type)}</p><strong class="speaker-organization">${escapeHtml(speaker.organization)}</strong><h2>${escapeHtml(speaker.nameZh)}</h2><span class="speaker-title">${escapeHtml(speaker.title)}</span><a class="speaker-detail-link" href="${detailUrl}" aria-label="查看${escapeHtml(speaker.nameZh)}講者簡介">請看簡介 <span aria-hidden="true">→</span></a></article>`;
       })
       .join("");
   }
