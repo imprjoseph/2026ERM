@@ -445,7 +445,7 @@ const historicalPhotoUrls: Record<number, string[]> = {
 };
 
 async function syncConfirmed2026DetailsOnce() {
-  const version = "2026-confirmed-details-v7";
+  const version = "2026-confirmed-details-v8";
   const applied = await db()
     .prepare(
       "SELECT value FROM app_meta WHERE key = 'current_event_content_version'",
@@ -595,34 +595,94 @@ async function syncConfirmed2026DetailsOnce() {
       12,
     ],
   ];
-  const speakerTemplates = [
-    [
-      "speaker-template-01",
-      "主管機關代表（範本）",
-      "主管機關｜待確認",
-      "職稱待確認",
-      "致詞貴賓",
-      "開幕致詞（範本）",
-      1,
-    ],
-    [
-      "speaker-template-02",
-      "保險業領袖（範本）",
-      "保險機構｜待確認",
-      "職稱待確認",
-      "專題講者",
-      "ERM 與資本策略（範本）",
-      2,
-    ],
-    [
-      "speaker-template-03",
-      "風險管理專家（範本）",
-      "專業機構｜待確認",
-      "職稱待確認",
-      "專題講者",
-      "新興風險與治理（範本）",
-      3,
-    ],
+  const speakerProfiles = [
+    {
+      id: "peng-jin-long",
+      nameZh: "彭金隆",
+      organization: "金融監督管理委員會",
+      title: "主任委員",
+      type: "致詞貴賓",
+      topic: "致詞",
+      bio: `學歷：
+1. 國立政治大學會計學系畢業
+2. 國立政治大學保險研究所碩士
+3. 國立政治大學企業管理博士
+
+經歷：
+1. 財政部科員、專員、秘書
+2. 實踐大學風險管理與保險學系助理教授、副教授、系主任、財務金融與保險研究所所長
+3. 國立政治大學風險管理與保險學系助理教授、副教授、教授、系主任
+4. 國立政治大學商學院副院長兼參與式教學與研究發展辦公室主任
+5. 財團法人汽車交通事故特別補償基金監察人
+6. 財團法人繼耘保險文教基金會董事
+7. 財團法人金融消費評議中心董事、評議委員`,
+      photoUrl: "/speakers/peng-jin-long.png",
+      sortOrder: 1,
+    },
+    {
+      id: "wang-li-hui",
+      nameZh: "王麗惠",
+      organization: "金融監督管理委員會保險局",
+      title: "局長",
+      type: "致詞貴賓",
+      topic: "致詞",
+      bio: `學歷：
+1. 國立政治大學財稅學系學士
+2. 國立政治大學保險研究所碩士
+3. 美國波士頓大學精算碩士
+
+經歷：
+1. 金融監督管理委員會保險局組長
+2. 金融監督管理委員會保險局主任秘書
+3. 金融監督管理委員會保險局副局長
+4. 金融監督管理委員會參事`,
+      photoUrl: "/speakers/wang-li-hui.png",
+      sortOrder: 2,
+    },
+    {
+      id: "shi-bai-da",
+      nameZh: "石百達",
+      organization: "財團法人保險安定基金",
+      title: "董事長",
+      type: "致詞貴賓",
+      topic: "致詞",
+      bio: `學歷：
+1. 德州大學奧斯汀校區經濟系博士
+2. 國立臺灣大學電機所碩士
+3. 國立中山大學電機系學士
+
+經歷與榮譽：
+1. 國立臺灣大學財務金融學系暨研究所主任（113.08～）
+2. 國立臺灣大學數位財金及產業發展研究中心主任
+3. 國立臺灣大學財務金融學系暨研究所副教授、教授
+4. 國立東華大學經濟學系助理教授、副教授
+5. 財團法人保險安定基金諮詢委員
+6. 台灣風險與保險學會理事
+7. 國立臺灣大學管理學院玉山學術獎
+8. 台灣風險與保險學會賴阿凰先生女士最佳論文獎
+9. 台灣風險與保險學會年會暨國際研討會最佳論文獎`,
+      photoUrl: "/speakers/shi-bai-da.png",
+      sortOrder: 3,
+    },
+    {
+      id: "chen-chang-cheng",
+      nameZh: "陳昌正",
+      organization: "財團法人保險安定基金",
+      title: "總經理",
+      type: "致詞貴賓",
+      topic: "致詞",
+      bio: `學歷：
+1. 成功大學應用數學研究所碩士
+2. 中華民國精算學會正會員（FAIRC）
+
+經歷：
+1. 國泰人壽數理部研究員、區主任
+2. 中華民國人壽保險商業同業公會精算資訊組專員、主任
+3. 中華民國人壽保險商業同業公會副秘書長
+4. 中華民國精算學會理事、常務理事、副理事長`,
+      photoUrl: "/speakers/chen-chang-cheng.png",
+      sortOrder: 4,
+    },
   ];
   const statements = [
     db()
@@ -673,23 +733,23 @@ async function syncConfirmed2026DetailsOnce() {
           item[8],
         ),
     ),
-    ...speakerTemplates.map((item) =>
+    ...speakerProfiles.map((speaker) =>
       db()
         .prepare(
           "INSERT INTO speakers (id,event_id,name_zh,name_en,organization,title,speaker_type,topic,bio,photo_url,sort_order,is_visible) VALUES (?,?,?,?,?,?,?,?,?,?,?,1)",
         )
         .bind(
-          item[0],
+          speaker.id,
           eventId,
-          item[1],
+          speaker.nameZh,
           "",
-          item[2],
-          item[3],
-          item[4],
-          item[5],
-          "本列為版型範本，正式姓名、職稱與簡介確認後更新。",
-          "",
-          item[6],
+          speaker.organization,
+          speaker.title,
+          speaker.type,
+          speaker.topic,
+          speaker.bio,
+          speaker.photoUrl,
+          speaker.sortOrder,
         ),
     ),
     db()

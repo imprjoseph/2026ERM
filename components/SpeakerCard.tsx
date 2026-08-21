@@ -31,9 +31,9 @@ export default function SpeakerCard({
       <Link
         className="speaker-detail-link"
         href={`/2026/speakers/${encodeURIComponent(speaker.id)}`}
-        aria-label={`查看${speaker.nameZh}講者詳細資料`}
+        aria-label={`查看${speaker.nameZh}講者簡介`}
       >
-        查看詳細 <span aria-hidden="true">→</span>
+        請看簡介 <span aria-hidden="true">→</span>
       </Link>
     </article>
   );

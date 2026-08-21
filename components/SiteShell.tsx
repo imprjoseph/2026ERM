@@ -189,7 +189,6 @@ export function Footer({
             <ReliableLink href="/privacy">隱私權政策</ReliableLink>
             <ReliableLink href="/personal-data">個資告知</ReliableLink>
             <ReliableLink href="/terms">使用條款</ReliableLink>
-            <ReliableLink href="/admin">管理後台</ReliableLink>
           </div>
         </div>
       </div>

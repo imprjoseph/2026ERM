@@ -24,7 +24,7 @@ test("講者卡片提供指定欄位與詳細資料入口", async () => {
   assert.match(card, /speaker-organization/);
   assert.match(card, /speaker\.nameZh/);
   assert.match(card, /speaker-title/);
-  assert.match(card, /查看詳細/);
+  assert.match(card, /請看簡介/);
   assert.match(card, /\/2026\/speakers\/\$\{encodeURIComponent/);
   const enhancements = await readFile(
     new URL("app/enhancements.css", root),
@@ -107,7 +107,7 @@ test("會議資訊移除費用名額列並確認三樓宴會廳", async () => {
   assert.doesNotMatch(database, /無障礙動線待確認/);
   assert.match(database, /3 樓宴會廳/);
   assert.match(database, /午餐地點｜B1 栢麗廳/);
-  assert.match(database, /2026-confirmed-details-v7/);
+  assert.match(database, /2026-confirmed-details-v8/);
 });
 test("敏感設定只出現在環境變數範本", async () => {
   const source = await readFile(new URL("lib/auth.ts", root), "utf8");
@@ -137,7 +137,10 @@ test("2026 會議資訊與範本資料已設定", async () => {
   assert.match(source, /08:30–09:00/);
   assert.match(source, /2026 年 11 月 6 日/);
   assert.match(source, /agenda-template-12/);
-  assert.match(source, /speaker-template-03/);
+  assert.match(source, /peng-jin-long/);
+  assert.match(source, /wang-li-hui/);
+  assert.match(source, /shi-bai-da/);
+  assert.match(source, /chen-chang-cheng/);
 });
 test("公開導覽採可靠原生連結並移除左上品牌文字", async () => {
   const shell = await readFile(

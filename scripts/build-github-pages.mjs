@@ -17,18 +17,23 @@ const pages = [
   ["/2026/agenda", "2026/agenda/index.html", "agenda"],
   ["/2026/speakers", "2026/speakers/index.html", "speakers"],
   [
-    "/2026/speakers/speaker-template-01",
-    "2026/speakers/speaker-template-01/index.html",
+    "/2026/speakers/peng-jin-long",
+    "2026/speakers/peng-jin-long/index.html",
     "speaker-detail",
   ],
   [
-    "/2026/speakers/speaker-template-02",
-    "2026/speakers/speaker-template-02/index.html",
+    "/2026/speakers/wang-li-hui",
+    "2026/speakers/wang-li-hui/index.html",
     "speaker-detail",
   ],
   [
-    "/2026/speakers/speaker-template-03",
-    "2026/speakers/speaker-template-03/index.html",
+    "/2026/speakers/shi-bai-da",
+    "2026/speakers/shi-bai-da/index.html",
+    "speaker-detail",
+  ],
+  [
+    "/2026/speakers/chen-chang-cheng",
+    "2026/speakers/chen-chang-cheng/index.html",
     "speaker-detail",
   ],
   ["/dialogues", "dialogues/index.html", "dialogues"],
@@ -82,10 +87,8 @@ function transform(html, route, pageKind) {
     )
     .replace(/<link\b[^>]*\/_next\/[^>]*>/gi, "")
     .replace(/<link\b[^>]*href="\/Users\/[^>]*>/gi, "")
-    .replace(
-      /\/Users\/[^)"']+?\/\.vinext\/fonts\//g,
-      `${basePath}/fonts/`,
-    )
+    .replace(/<a\b[^>]*href="\/admin"[^>]*>管理後台<\/a>/gi, "")
+    .replace(/\/Users\/[^)"']+?\/\.vinext\/fonts\//g, `${basePath}/fonts/`)
     .replaceAll(sourceOrigin, `${githubOrigin}${basePath}`)
     .replace(
       /href="\/admin"/g,

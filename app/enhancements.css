@@ -365,6 +365,7 @@ html.navigation-pending .site-header::after {
   color: var(--gray);
   font-size: 16px;
   line-height: 1.9;
+  white-space: pre-line;
 }
 .speaker-back-link {
   display: inline-block;

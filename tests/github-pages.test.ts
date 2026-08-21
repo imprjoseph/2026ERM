@@ -10,6 +10,10 @@ test("GitHub Pages 首頁、議程、歷年與報名頁已產生", async () => {
     "docs/index.html",
     "docs/2026/agenda/index.html",
     "docs/2026/speakers/index.html",
+    "docs/2026/speakers/peng-jin-long/index.html",
+    "docs/2026/speakers/wang-li-hui/index.html",
+    "docs/2026/speakers/shi-bai-da/index.html",
+    "docs/2026/speakers/chen-chang-cheng/index.html",
     "docs/dialogues/index.html",
     "docs/dialogues/2025/index.html",
     "docs/register/index.html",
@@ -34,6 +38,7 @@ test("GitHub Pages 使用子目錄連結並移除原站執行碼", async () => {
   assert.doesNotMatch(html, /\/_next\//);
   assert.doesNotMatch(html, /vinext\.navigationRuntime/);
   assert.doesNotMatch(html, /insurance-risk-forum-2026\.impr-joseph/);
+  assert.doesNotMatch(html, />管理後台<\/a>/);
 });
 
 test("GitHub Pages 保留完整網站排版樣式", async () => {
