@@ -410,11 +410,11 @@ export function DialogueDetail({
                 <figure key={url}>
                   <img
                     src={url}
-                    alt={`${dialogue.year}年保險業風險管理趨勢論壇會議現場照片 ${index + 1}`}
+                    alt={`${dialogue.year}年歷年對話會議現場照片 ${index + 1}`}
                     loading="lazy"
                   />
                   <figcaption>
-                    {dialogue.year} 保險業風險管理趨勢論壇
+                    {dialogue.year} 歷年對話
                   </figcaption>
                 </figure>
               ))}

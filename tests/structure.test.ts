@@ -160,6 +160,10 @@ test("頁首歷年對話使用可靠連結，歷年卡片不顯示論壇名稱",
     new URL("components/SiteShell.tsx", root),
     "utf8",
   );
+  const home = await readFile(
+    new URL("components/HomePage.tsx", root),
+    "utf8",
+  );
   const detail = await readFile(
     new URL("components/EventDetailPages.tsx", root),
     "utf8",
@@ -167,6 +171,8 @@ test("頁首歷年對話使用可靠連結，歷年卡片不顯示論壇名稱",
   assert.match(shell, /\["歷年對話", "\/dialogues"\]/);
   assert.match(shell, /<a \{\.\.\.props\} href=\{href\}/);
   assert.doesNotMatch(shell, /from "next\/link"/);
+  assert.match(home, /<span>\{d\.theme\}<\/span>/);
+  assert.doesNotMatch(home, /<span>\{d\.name\}<\/span>/);
   assert.match(detail, /<span>\{d\.isPublished \? "歷年對話"/);
   assert.match(detail, /<h2>\{event\.themeZh\}<\/h2>/);
   assert.doesNotMatch(detail, /<h2>\{event\.nameZh\}<\/h2>/);

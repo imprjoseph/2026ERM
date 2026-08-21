@@ -364,7 +364,7 @@ export default function HomePage({
               {event.dialogues.map((d) => (
                 <Link href={`/dialogues/${d.slug}`} key={d.id} className="year">
                   <strong>{d.year}</strong>
-                  <span>{d.name}</span>
+                  <span>{d.theme}</span>
                   <i>{d.isPublished ? "查看" : "整理中"}</i>
                 </Link>
               ))}
