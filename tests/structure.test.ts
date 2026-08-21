@@ -34,6 +34,18 @@ test("講者卡片提供指定欄位與詳細資料入口", async () => {
     enhancements,
     /\.speaker-card \.speaker-photo \{[\s\S]*width: 62\.5%/,
   );
+  assert.match(
+    enhancements,
+    /\.speaker-grid\.detailed \{[\s\S]*grid-template-columns: repeat\(4/,
+  );
+  assert.match(
+    enhancements,
+    /\.speaker-card \{[\s\S]*border-top: 3px solid/,
+  );
+  assert.match(
+    enhancements,
+    /\.speaker-card \.speaker-organization \{[\s\S]*min-height: 0/,
+  );
   assert.match(enhancements, /\.speaker-detail-photo \{[\s\S]*width: 188px/);
 });
 test("歷年頁提供照片，頁尾使用完整單位名稱與聯絡資訊", async () => {
