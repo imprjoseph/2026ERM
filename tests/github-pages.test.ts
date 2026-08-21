@@ -14,6 +14,7 @@ test("GitHub Pages 首頁、議程、歷年與報名頁已產生", async () => {
     "docs/dialogues/2025/index.html",
     "docs/register/index.html",
     "docs/github-pages.js",
+    "docs/site.css",
     "docs/config.js",
     "docs/.nojekyll",
   ]) {
@@ -26,9 +27,20 @@ test("GitHub Pages 使用子目錄連結並移除原站執行碼", async () => {
   assert.match(html, /href="\/2026ERM\/dialogues"/);
   assert.match(html, /src="\/2026ERM\/hero-2026\.jpg"/);
   assert.match(html, /src="\/2026ERM\/github-pages\.js"/);
+  assert.match(html, /href="\/2026ERM\/site\.css"/);
+  assert.doesNotMatch(html, /\/2026ERM\/2026ERM\//);
   assert.doesNotMatch(html, /\/_next\//);
   assert.doesNotMatch(html, /vinext\.navigationRuntime/);
   assert.doesNotMatch(html, /insurance-risk-forum-2026\.impr-joseph/);
+});
+
+test("GitHub Pages 保留完整網站排版樣式", async () => {
+  const css = await readFile(new URL("docs/site.css", root), "utf8");
+  assert.match(css, /\.site-header/);
+  assert.match(css, /\.hero/);
+  assert.match(css, /\.speaker-grid/);
+  assert.match(css, /\.floating-registration/);
+  assert.ok(css.length > 40_000);
 });
 
 test("Google Sheet API 與報名寫入已串接", async () => {

@@ -58,10 +58,30 @@ async function fetchPage(route) {
   throw lastError;
 }
 
+async function fetchStylesheet(homeHtml) {
+  const stylesheetPath = homeHtml.match(
+    /<link\b(?=[^>]*rel="stylesheet")(?=[^>]*href="([^"]+\.css)")[^>]*>/i,
+  )?.[1];
+  if (!stylesheetPath) throw new Error("找不到原站樣式檔");
+
+  const response = await fetch(new URL(stylesheetPath, sourceOrigin), {
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!response.ok) {
+    throw new Error(`樣式檔下載失敗：HTTP ${response.status}`);
+  }
+  return await response.text();
+}
+
 function transform(html, route, pageKind) {
   let result = html
     .replace(/<script\b[\s\S]*?<\/script>/gi, "")
+    .replace(
+      /<link\b(?=[^>]*rel="stylesheet")(?=[^>]*href="\/_next\/static\/css\/[^"]+")[^>]*>/gi,
+      '<link rel="stylesheet" href="/site.css">',
+    )
     .replace(/<link\b[^>]*\/_next\/[^>]*>/gi, "")
+    .replace(/<link\b[^>]*href="\/Users\/[^>]*>/gi, "")
     .replaceAll(sourceOrigin, `${githubOrigin}${basePath}`)
     .replace(
       /href="\/admin"/g,
@@ -92,8 +112,15 @@ await rm(outputRoot, { recursive: true, force: true });
 await mkdir(outputRoot, { recursive: true });
 await cp(path.resolve("public"), outputRoot, { recursive: true });
 
+const sourceHomeHtml = await fetchPage("/");
+await writeFile(
+  path.join(outputRoot, "site.css"),
+  await fetchStylesheet(sourceHomeHtml),
+);
+
 for (const [route, output, pageKind] of pages) {
-  const html = transform(await fetchPage(route), route, pageKind);
+  const sourceHtml = route === "/" ? sourceHomeHtml : await fetchPage(route);
+  const html = transform(sourceHtml, route, pageKind);
   const target = path.join(outputRoot, output);
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, html);
