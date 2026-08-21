@@ -28,7 +28,9 @@ test("GitHub Pages 使用子目錄連結並移除原站執行碼", async () => {
   assert.match(html, /src="\/2026ERM\/hero-2026\.jpg"/);
   assert.match(html, /src="\/2026ERM\/github-pages\.js"/);
   assert.match(html, /href="\/2026ERM\/site\.css"/);
+  assert.match(html, /\/2026ERM\/fonts\/noto-(sans|serif)-tc-/);
   assert.doesNotMatch(html, /\/2026ERM\/2026ERM\//);
+  assert.doesNotMatch(html, /\/Users\//);
   assert.doesNotMatch(html, /\/_next\//);
   assert.doesNotMatch(html, /vinext\.navigationRuntime/);
   assert.doesNotMatch(html, /insurance-risk-forum-2026\.impr-joseph/);

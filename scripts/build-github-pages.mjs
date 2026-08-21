@@ -82,6 +82,10 @@ function transform(html, route, pageKind) {
     )
     .replace(/<link\b[^>]*\/_next\/[^>]*>/gi, "")
     .replace(/<link\b[^>]*href="\/Users\/[^>]*>/gi, "")
+    .replace(
+      /\/Users\/[^)"']+?\/\.vinext\/fonts\//g,
+      `${basePath}/fonts/`,
+    )
     .replaceAll(sourceOrigin, `${githubOrigin}${basePath}`)
     .replace(
       /href="\/admin"/g,
@@ -111,6 +115,9 @@ function transform(html, route, pageKind) {
 await rm(outputRoot, { recursive: true, force: true });
 await mkdir(outputRoot, { recursive: true });
 await cp(path.resolve("public"), outputRoot, { recursive: true });
+await cp(path.resolve(".vinext/fonts"), path.join(outputRoot, "fonts"), {
+  recursive: true,
+});
 
 const sourceHomeHtml = await fetchPage("/");
 await writeFile(
