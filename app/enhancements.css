@@ -268,14 +268,16 @@ html.navigation-pending .site-header::after {
   white-space: nowrap;
 }
 .speaker-card .speaker-type {
-  margin-bottom: 10px;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  line-height: 1.3;
 }
 .speaker-card .speaker-organization {
-  min-height: 2.8em;
-  margin-bottom: 8px;
+  min-height: 2.5em;
+  margin-bottom: 5px;
   color: #53635f;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.25;
 }
 .speaker-card .speaker-name-en {
   display: block;
@@ -285,16 +287,17 @@ html.navigation-pending .site-header::after {
 }
 .speaker-card .speaker-title {
   display: block;
-  margin-top: 9px;
+  margin-top: 5px;
   color: var(--gray);
   font-size: 14px;
+  line-height: 1.35;
 }
 .speaker-detail-link {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 14px;
   border-top: 1px solid var(--line);
-  padding-top: 13px;
+  padding-top: 10px;
   color: #735c34;
   font-size: 14px;
   font-weight: 700;
@@ -344,7 +347,7 @@ html.navigation-pending .site-header::after {
   display: grid;
   grid-template-columns: 130px 1fr;
   border-bottom: 1px solid var(--line);
-  padding: 15px 0;
+  padding: 11px 0;
 }
 .speaker-facts dt {
   color: var(--gray);
@@ -355,21 +358,22 @@ html.navigation-pending .site-header::after {
   font-weight: 700;
 }
 .speaker-profile-block {
-  margin-top: 48px;
+  margin-top: 34px;
 }
 .speaker-profile-block h2 {
-  margin: 12px 0;
+  margin: 8px 0 10px;
   font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.2;
 }
 .speaker-profile-block p {
   color: var(--gray);
   font-size: 16px;
-  line-height: 1.9;
+  line-height: 1.6;
   white-space: pre-line;
 }
 .speaker-back-link {
   display: inline-block;
-  margin-top: 48px;
+  margin-top: 36px;
   border-bottom: 1px solid;
   padding-bottom: 5px;
   color: #735c34;
@@ -600,7 +604,7 @@ html.navigation-pending .site-header::after {
 /* Balanced public-site typography */
 body {
   font-size: 16px;
-  line-height: 1.65;
+  line-height: 1.5;
 }
 .nav-links > a {
   font-size: 14px;
@@ -641,6 +645,16 @@ body {
 .faq-grid details p,
 .legal-content p {
   font-size: 16px;
+  line-height: 1.55;
+}
+.prose,
+.page-hero p,
+.archive-intro p,
+.speaker-template-note,
+.notice,
+.legal-content,
+.quick-registration-heading > p {
+  line-height: 1.6;
 }
 .speaker-card > span,
 .speaker-card > strong,
@@ -656,7 +670,7 @@ body {
 }
 .transport-grid p {
   font-size: 15px;
-  line-height: 1.75;
+  line-height: 1.55;
 }
 .form-intro p,
 .notice,
@@ -723,7 +737,7 @@ body {
   margin: 0 0 4px;
   color: #4f5c58;
   font-size: 16px;
-  line-height: 1.8;
+  line-height: 1.6;
 }
 .quick-form {
   padding: 38px;
